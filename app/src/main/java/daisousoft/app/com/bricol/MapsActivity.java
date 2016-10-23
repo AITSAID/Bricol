@@ -1,9 +1,12 @@
 package daisousoft.app.com.bricol;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
@@ -11,6 +14,7 @@ import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -21,6 +25,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     private TrackMe gps;
     double latitude;
     double longitude;
+    Button myProfil;
     private static final String FORM_VIEW = "FORM_VIEW_MARKER";
     Bundle bundle = new Bundle();
 
@@ -31,6 +36,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
           //      .findFragmentById(R.id.infoWindowMap);
+
+        myProfil = (Button) findViewById(R.id.profil);
         gps = new TrackMe(MapsActivity.this);
         if(gps.canGetLocation()){
             latitude = gps .getLatitude();
@@ -52,8 +59,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605099, -7.48496)).snippet(FORM_VIEW));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605076, -7.487376)).snippet(FORM_VIEW));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605099, -7.48496)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon)));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605076, -7.487376)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon)));
 
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -128,7 +135,10 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 //        Log.d("debug", "onWindowHidden: " + infoWindow);
     }
 
-
+    public void goProfil(View view){
+        Intent i = new Intent(this , BricolleurActivity.class);
+        startActivity(i);
+    }
 
 /**
      * Manipulates the map once available.

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Bricol</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">BricolApp</string>
+    <string name="title_activity_maps">BricolApp</string>
 </resources>
