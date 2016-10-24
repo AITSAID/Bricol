@@ -59,8 +59,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605099, -7.48496)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon)));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605076, -7.487376)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon)));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605099, -7.48496)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605076, -7.487376)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

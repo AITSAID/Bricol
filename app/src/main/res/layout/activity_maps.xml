@@ -3,8 +3,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="daisousoft.app.com.bricol.MapsActivity"
-    android:background="@drawable/bg">
+tools:context="daisousoft.app.com.bricol.MapsActivity">
 
 ...
 
@@ -12,16 +11,24 @@ tools:context="daisousoft.app.com.bricol.MapsActivity"
     android:id="@+id/infoWindowMap"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"
-    android:layout_margin="20dp" />
+    android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment" />
 
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/profil"
-        android:layout_alignBottom="@+id/infoWindowMap"
-        android:layout_alignEnd="@+id/infoWindowMap"
-        android:background="@drawable/bricolapp"
-        android:onClick="goProfil"/>
+        android:background="@drawable/addbrico"
+        android:onClick="goProfil"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/profil"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/footer" />
+
 
 </RelativeLayout>
