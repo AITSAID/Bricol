@@ -26,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     double latitude;
     double longitude;
     Button myProfil;
+    PlayGifView pGif;
     private static final String FORM_VIEW = "FORM_VIEW_MARKER";
     Bundle bundle = new Bundle();
 
@@ -38,6 +39,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
           //      .findFragmentById(R.id.infoWindowMap);
 
         myProfil = (Button) findViewById(R.id.profil);
+        pGif = (PlayGifView) findViewById(R.id.viewGif);
+        pGif.setImageResource(R.drawable.radar);
         gps = new TrackMe(MapsActivity.this);
         if(gps.canGetLocation()){
             latitude = gps .getLatitude();
