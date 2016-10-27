@@ -7,12 +7,13 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/horizontalScrollView"
+        android:layout_height="65dp"
+        android:id="@+id/horizontal_scroll_view"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true">
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,74 +64,18 @@
     </LinearLayout>
     </HorizontalScrollView>
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/horizontalScrollView2"
-        android:layout_above="@+id/button8"
-        android:layout_alignStart="@+id/horizontalScrollView"
-        android:layout_marginBottom="47dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/button77"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job7"/>
-
-            <Button
-                android:id="@+id/button22"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job2" />
-
-            <Button
-                android:id="@+id/button44"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job4" />
-
-            <Button
-                android:id="@+id/button66"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job6" />
-
-            <Button
-                android:id="@+id/button33"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job3" />
-
-            <Button
-                android:id="@+id/button55"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job5" />
-
-            <Button
-                android:id="@+id/button11"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/job1"/>
-
-        </LinearLayout>
-    </HorizontalScrollView>
-
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Your Name"
+        android:hint="Your Name"
         android:id="@+id/textView"
+        android:textSize="30dp"
+        android:textCursorDrawable="@color/cast_expanded_controller_ad_container_white_stripe_color"
         android:drawableLeft="@android:drawable/ic_menu_myplaces"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/button8" />
 
     <Button
         android:layout_width="100dp"
@@ -138,22 +83,57 @@
         android:id="@+id/button8"
         android:background="@drawable/yesbutton"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/textView" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/button9"
         android:background="@drawable/nobutton"
-        android:layout_alignTop="@+id/button8"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageView"
+        android:src="@drawable/register"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/bricolapp" />
+        android:layout_alignStart="@+id/horizontal_scroll_view" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/anonymejob"
+        android:layout_above="@+id/button9"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView3"
+        android:src="@drawable/anonymejob"
+        android:layout_above="@+id/imageView2"
+        android:layout_toEndOf="@+id/imageView2" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView4"
+        android:src="@drawable/anonymejob"
+        android:layout_above="@+id/imageView2"
+        android:layout_toStartOf="@+id/imageView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="0672145149124"
+        android:gravity="center_vertical"
+        android:drawableLeft="@android:drawable/sym_call_outgoing"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
 
 </RelativeLayout>

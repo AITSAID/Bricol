@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -143,6 +144,21 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         startActivity(i);
     }
 
+    public void goToMyLocation(View view){
+        gps = new TrackMe(MapsActivity.this);
+        if(gps.canGetLocation()){
+            latitude = gps .getLatitude();
+            longitude = gps.getLongitude();
+        }
+        else
+        {
+            gps.showSettingsAlert();
+        }
+        CameraUpdate mylocation = CameraUpdateFactory.newLatLngZoom(
+                new LatLng(latitude,longitude), 15);
+        mMap.animateCamera(mylocation);
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
+    }
 /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
