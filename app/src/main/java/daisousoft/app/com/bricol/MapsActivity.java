@@ -20,6 +20,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
+import daisousoft.app.com.bricol.DAO.myDBHandler;
+import daisousoft.app.com.bricol.Models.Account;
+
 public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener {
 
     public static GoogleMap mMap;
@@ -29,6 +34,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     Button myProfil;
     PlayGifView pGif;
     private static final String FORM_VIEW = "FORM_VIEW_MARKER";
+    myDBHandler mydb ;
+    ArrayList<Account> bricoList;
     Bundle bundle = new Bundle();
 
     @Override
@@ -38,6 +45,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
           //      .findFragmentById(R.id.infoWindowMap);
+        mydb = new myDBHandler(getApplicationContext());
+
 
         myProfil = (Button) findViewById(R.id.profil);
         pGif = (PlayGifView) findViewById(R.id.viewGif);
@@ -62,10 +71,13 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                bricoList = mydb.getAllAccounts();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605099, -7.48496)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(33.605076, -7.487376)).snippet(FORM_VIEW).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-
+                for(Account ac : bricoList) {
+                    if(ac!=null) {
+                        mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    }
+                }
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -75,14 +87,9 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                 new InfoWindow.MarkerSpecification(20, 90);
 
                         Fragment fragment = null;
-
-                        switch (marker.getSnippet()) {
-                            case FORM_VIEW:
-                                fragment = new BricoleurFragment();
-                                bundle.putString("ID",marker.getId());
-                                fragment.setArguments(bundle);
-                                break;
-                        }
+                        fragment = new BricoleurFragment();
+                        bundle.putString("ID",marker.getSnippet());
+                        fragment.setArguments(bundle);
 
                         if (fragment != null) {
                             final InfoWindow infoWindow = new InfoWindow(marker, markerSpec, fragment);

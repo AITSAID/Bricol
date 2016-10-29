@@ -7,59 +7,65 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="80dp"
         android:id="@+id/horizontal_scroll_view"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp">
+        android:layout_below="@+id/imageview"
+        android:layout_marginTop="80dp"
+        android:layout_alignParentEnd="true">
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/button7"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/job7"/>
+            android:id="@+id/job1"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job1"/>
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/job2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
             android:background="@drawable/job2" />
 
         <Button
-            android:id="@+id/button4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/job4" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/job6" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/job3"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
             android:background="@drawable/job3" />
 
         <Button
-            android:id="@+id/button5"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/job4"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job4" />
+
+        <Button
+            android:id="@+id/job5"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
             android:background="@drawable/job5" />
 
         <Button
-            android:id="@+id/button1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/job1"/>
+            android:id="@+id/job6"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job6" />
+
+        <Button
+            android:id="@+id/job7"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job7"/>
+
 
     </LinearLayout>
     </HorizontalScrollView>
@@ -70,17 +76,18 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:hint="Your Name"
-        android:id="@+id/textView"
+        android:id="@+id/namebrico"
         android:textSize="30dp"
         android:textCursorDrawable="@color/cast_expanded_controller_ad_container_white_stripe_color"
         android:drawableLeft="@android:drawable/ic_menu_myplaces"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/button8" />
+        android:layout_toEndOf="@+id/save" />
 
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/button8"
+        android:id="@+id/save"
+        android:onClick="SaveAccount"
         android:background="@drawable/yesbutton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
@@ -88,7 +95,7 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/button9"
+        android:id="@+id/delete"
         android:background="@drawable/nobutton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
@@ -96,44 +103,47 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/register"
+        android:id="@+id/imageview"
+        android:background="@drawable/register"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/horizontal_scroll_view" />
 
-    <ImageView
+    <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imageView2"
-        android:src="@drawable/anonymejob"
-        android:layout_above="@+id/button9"
+        android:id="@+id/choice2"
+        android:background="@drawable/anonymejob"
+        android:onClick="UnCheckJob"
+        android:layout_above="@+id/delete"
         android:layout_centerHorizontal="true" />
 
-    <ImageView
+    <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imageView3"
-        android:src="@drawable/anonymejob"
-        android:layout_above="@+id/imageView2"
-        android:layout_toEndOf="@+id/imageView2" />
+        android:id="@+id/choice3"
+        android:background="@drawable/anonymejob"
+        android:onClick="UnCheckJob"
+        android:layout_above="@+id/choice2"
+        android:layout_toEndOf="@+id/choice2" />
 
-    <ImageView
+    <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imageView4"
-        android:src="@drawable/anonymejob"
-        android:layout_above="@+id/imageView2"
-        android:layout_toStartOf="@+id/imageView2" />
+        android:id="@+id/choice1"
+        android:background="@drawable/anonymejob"
+        android:onClick="UnCheckJob"
+        android:layout_above="@+id/choice2"
+        android:layout_toStartOf="@+id/choice2" />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="0672145149124"
+        android:text="0672145149"
         android:gravity="center_vertical"
-        android:drawableLeft="@android:drawable/sym_call_outgoing"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:drawableLeft="@android:drawable/ic_menu_call"
+        android:id="@+id/phonebrico"
+        android:layout_below="@+id/namebrico"
+        android:layout_alignStart="@+id/namebrico" />
 
 </RelativeLayout>
