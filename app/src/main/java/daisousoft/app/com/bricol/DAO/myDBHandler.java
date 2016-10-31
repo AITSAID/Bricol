@@ -161,4 +161,13 @@ public class myDBHandler extends SQLiteOpenHelper {
         return Ac;
     }
 
+    /*
+* Delete all ACCOUNTS
+* */
+    public void deleteAllAccounts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_ACCOUNT);
+        db.close();
+    }
+
 }

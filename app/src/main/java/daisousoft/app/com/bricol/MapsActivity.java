@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import daisousoft.app.com.bricol.DAO.Synchronize;
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
 
@@ -45,6 +46,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
           //      .findFragmentById(R.id.infoWindowMap);
+        //Synchronize fetcher = new Synchronize(this.getApplicationContext());
+        //fetcher.execute();
         mydb = new myDBHandler(getApplicationContext());
 
 
@@ -152,6 +155,9 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     }
 
     public void goToMyLocation(View view){
+        Synchronize fetcher = new Synchronize(this.getApplicationContext());
+        fetcher.execute();
+
         gps = new TrackMe(MapsActivity.this);
         if(gps.canGetLocation()){
             latitude = gps .getLatitude();
@@ -166,6 +172,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         mMap.animateCamera(mylocation);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
     }
+
+
 /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.

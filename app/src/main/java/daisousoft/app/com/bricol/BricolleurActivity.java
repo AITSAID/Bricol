@@ -1,6 +1,7 @@
 package daisousoft.app.com.bricol;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -12,9 +13,18 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class BricolleurActivity extends Activity {
 
@@ -23,6 +33,8 @@ public class BricolleurActivity extends Activity {
     private TrackMe gps;
     private double latitude,longitude;
     String IdDevice,PhoneNumber;
+    ProgressDialog progress;
+
     myDBHandler mydb ;
 
     @Override
@@ -162,7 +174,43 @@ public class BricolleurActivity extends Activity {
             gps.showSettingsAlert();
         }
         Account account = new Account(IdDevice,namebricp.getText().toString(),phonebrico.getText().toString(),latitude,longitude,1) ;
-        mydb.addAccount(account);
+        //mydb.addAccount(account);
+        Gson gson = new Gson();
+        String json = gson.toJson(account);
+        Toast.makeText(getApplicationContext(),"Working on it "+json,Toast.LENGTH_LONG).show();
+        addAccount(json);
 
+    }
+
+    public void addAccount(final String jsonValue){
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://bricolapp-daisousoft.rhcloud.com/register?accountUpdate="+jsonValue)
+                .build();
+
+        client.newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(final Call call, IOException e) {
+                        // Error
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // For the example, you can show an error dialog or a toast
+                                // on the main UI thread
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        String res = response.body().string();
+
+                        // Do something with the response
+                    }
+                });
     }
 }
