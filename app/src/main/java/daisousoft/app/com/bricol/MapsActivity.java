@@ -19,12 +19,24 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
-import daisousoft.app.com.bricol.DAO.Synchronize;
 import daisousoft.app.com.bricol.DAO.myDBHandler;
+import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
 import daisousoft.app.com.bricol.Models.Account;
+import daisousoft.app.com.bricol.Support.PlayGifView;
+import daisousoft.app.com.bricol.Support.TrackMe;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener {
 
@@ -48,9 +60,13 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
           //      .findFragmentById(R.id.infoWindowMap);
         //Synchronize fetcher = new Synchronize(this.getApplicationContext());
         //fetcher.execute();
+
+
+
         mydb = new myDBHandler(getApplicationContext());
 
-
+        //ScrollView verticalScrollView = (ScrollView) findViewById(R.id.vertical_scroll_view);
+        //OverScrollDecoratorHelper.setUpOverScroll(verticalScrollView);
         myProfil = (Button) findViewById(R.id.profil);
         pGif = (PlayGifView) findViewById(R.id.viewGif);
         pGif.setImageResource(R.drawable.radar);
@@ -76,11 +92,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 mMap = googleMap;
                 bricoList = mydb.getAllAccounts();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
-                for(Account ac : bricoList) {
-                    if(ac!=null) {
-                        mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                    }
-                }
+                ExecuteRequest();
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -155,8 +167,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     }
 
     public void goToMyLocation(View view){
-        Synchronize fetcher = new Synchronize(this.getApplicationContext());
-        fetcher.execute();
+        ExecuteRequest();
 
         gps = new TrackMe(MapsActivity.this);
         if(gps.canGetLocation()){
@@ -174,6 +185,55 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     }
 
 
+    public void mChooseJob(View view){
+
+    }
+
+    public void ExecuteRequest(){
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://bricolapp-daisousoft.rhcloud.com/getallbrico")
+                .build();
+
+        client.newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(final Call call, IOException e) {
+                        // Error
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // For the example, you can show an error dialog or a toast
+                                // on the main UI thread
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        final String res = response.body().string();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mMap.clear();
+                                String jsonData = res;
+                                Gson gson = new Gson();
+                                Type listType = new TypeToken<List<Account>>(){}.getType();
+                                List<Account> listaccounts = (List<Account>) gson.fromJson(jsonData, listType);
+                                for(Account ac :listaccounts) {
+                                    mydb.addAccount(ac);
+                                    if(ac!=null) {
+                                        mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                    }
+                                }
+                            }
+                        });
+
+                    }
+                });
+    }
 /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.

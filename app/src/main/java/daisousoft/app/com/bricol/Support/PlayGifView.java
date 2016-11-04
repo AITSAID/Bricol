@@ -1,4 +1,4 @@
-package daisousoft.app.com.bricol;
+package daisousoft.app.com.bricol.Support;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

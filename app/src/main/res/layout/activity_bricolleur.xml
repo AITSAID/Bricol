@@ -97,6 +97,7 @@
         android:layout_height="100dp"
         android:id="@+id/delete"
         android:background="@drawable/nobutton"
+        android:onClick="UnSaveAccount"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 

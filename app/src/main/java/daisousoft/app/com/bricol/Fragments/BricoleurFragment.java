@@ -1,4 +1,4 @@
-package daisousoft.app.com.bricol;
+package daisousoft.app.com.bricol.Fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
+import daisousoft.app.com.bricol.R;
 
 public class BricoleurFragment extends Fragment {
     myDBHandler mydb ;
