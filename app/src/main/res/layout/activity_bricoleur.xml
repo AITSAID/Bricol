@@ -23,25 +23,25 @@
         android:layout_marginRight="50dp">
 
         <Button
-            android:id="@+id/j1"
+            android:id="@+id/display1"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/job1" />
+            android:visibility="invisible" />
 
         <Button
-            android:id="@+id/j2"
+            android:id="@+id/display2"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/job2" />
+            android:visibility="invisible"/>
 
         <Button
-            android:id="@+id/j3"
+            android:id="@+id/display3"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/job6" />
+            android:visibility="invisible" />
 
     </LinearLayout>
 

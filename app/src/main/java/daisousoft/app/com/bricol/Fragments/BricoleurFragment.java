@@ -8,17 +8,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
+import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.R;
 
 public class BricoleurFragment extends Fragment {
     myDBHandler mydb ;
     TextView name;
+    Button c1,c2,c3;
     Account bricoAccount = null;
+    List<Jobs> listjobs = null;
     Bundle bundle = new Bundle();
     @Nullable
     @Override
@@ -31,6 +37,7 @@ public class BricoleurFragment extends Fragment {
         bundle = this.getArguments();
         mydb = new myDBHandler(getContext());
         bricoAccount = mydb.getAccountByID(bundle.getString("ID"));
+        listjobs=mydb.getAllJobs(bundle.getString("ID"));
         return view;
     }
 
@@ -61,9 +68,182 @@ public class BricoleurFragment extends Fragment {
         };
         name = (TextView) view.findViewById(R.id.name);
         name.setText(" Hi i'm "+bricoAccount.get_name());
-        view.findViewById(R.id.j1).setOnClickListener(onClickListener);
-        view.findViewById(R.id.j2).setOnClickListener(onClickListener);
+        c1 = (Button) view.findViewById(R.id.display1);
+        c1.setTag(c1.getId());
+        c2 = (Button) view.findViewById(R.id.display2);
+        c2.setTag(c2.getId());
+        c3 = (Button) view.findViewById(R.id.display3);
+        c3.setTag(c3.getId());
+        view.findViewById(R.id.display1).setOnClickListener(onClickListener);
+        view.findViewById(R.id.display2).setOnClickListener(onClickListener);
         view.findViewById(R.id.callbrico).setOnClickListener(onCallListener);
+
+        for(Jobs jb :listjobs) {
+            EnableJobs(jb.getIdjob());
+        }
+        //GetAllJobs(bricoAccount.get_id());
+    }
+
+
+    public void EnableJobs(int idjob) {
+        //test DATABASE
+        //mydb.addAccount(new Account("hdjahdadz5454", "MAROUANE", "0672145149", 33.121, 7.1245, 1));
+        //phonebrico.setText(mydb.getAllAccounts().size()+"");
+        int choose = checkEmptyChoice();
+
+        if(2131624106==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job1));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job1));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job1));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        if(2131624107==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job2));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job2));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job2));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        if(2131624108==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job3));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job3));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job3));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        if(2131624109==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job4));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job4));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job4));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+
+        if(2131624110==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job5));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job5));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job5));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+
+        if(2131624111==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job6));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job6));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job6));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        if(2131624112==idjob){
+            if(choose == 1 ){
+                c1.setBackground(getResources().getDrawable(R.drawable.job7));
+                c1.setTag("full");
+                c1.setVisibility(View.VISIBLE);
+            }else{
+                if(choose == 2){
+                    c2.setBackground(getResources().getDrawable(R.drawable.job7));
+                    c2.setTag("full");
+                    c2.setVisibility(View.VISIBLE);
+                }else{
+                    if(choose == 3){
+                        c3.setBackground(getResources().getDrawable(R.drawable.job7));
+                        c3.setTag("full");
+                        c3.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public int checkEmptyChoice() {
+        if (!c1.getTag().equals("full")) {
+            return 1;
+        } else {
+            if (!c2.getTag().equals("full")) {
+                return 2;
+            } else {
+                if (!c3.getTag().equals("full")) {
+                    return 3;
+                }
+            }
+        }
+
+        return 0;
     }
 }
 

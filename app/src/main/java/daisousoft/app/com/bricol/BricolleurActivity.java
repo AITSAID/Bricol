@@ -57,6 +57,7 @@ public class BricolleurActivity extends Activity {
         j5 = (Button)findViewById(R.id.job5);
         j6 = (Button)findViewById(R.id.job6);
         j7 = (Button)findViewById(R.id.job7);
+
         namebricp = (EditText) findViewById(R.id.namebrico) ;
         phonebrico = (EditText) findViewById(R.id.phonebrico);
 
@@ -73,7 +74,10 @@ public class BricolleurActivity extends Activity {
         // Initiate IdDevice and PhoneNumber
         IdDevice = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-
+        progress = new ProgressDialog(BricolleurActivity.this);
+        progress.setTitle("Uploading");
+        progress.setMessage("Please wait...");
+        progress.show();
         GetAccount(IdDevice);
         GetAllJobs(IdDevice);
         //PhoneNumber = tMgr.getSimSerialNumber();
@@ -316,6 +320,7 @@ public class BricolleurActivity extends Activity {
 
     }
 
+
     public int checkEmptyChoice() {
         if (c1.getTag().equals(c1.getId())) {
             return 1;
@@ -331,7 +336,6 @@ public class BricolleurActivity extends Activity {
 
         return 0;
     }
-
     public void UnCheckJob(View view){
         int id = 0;
 
@@ -518,6 +522,7 @@ public class BricolleurActivity extends Activity {
                                 }
                             }
                         });
+                        progress.dismiss();
 
                     }
                 });

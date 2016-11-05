@@ -30,6 +30,8 @@ import java.util.List;
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
 import daisousoft.app.com.bricol.Models.Account;
+import daisousoft.app.com.bricol.Models.Jobs;
+import daisousoft.app.com.bricol.Models.JobsObject;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
 import okhttp3.Call;
@@ -92,7 +94,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 mMap = googleMap;
                 bricoList = mydb.getAllAccounts();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
-                ExecuteRequest();
+                getAllAccounts();
+                getAllJobs();
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -167,7 +170,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     }
 
     public void goToMyLocation(View view){
-        ExecuteRequest();
+        getAllAccounts();
+        getAllJobs();
 
         gps = new TrackMe(MapsActivity.this);
         if(gps.canGetLocation()){
@@ -189,7 +193,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     }
 
-    public void ExecuteRequest(){
+    public void getAllAccounts(){
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -218,6 +222,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                             @Override
                             public void run() {
                                 mMap.clear();
+                                mydb.deleteAllAccounts();
                                 String jsonData = res;
                                 Gson gson = new Gson();
                                 Type listType = new TypeToken<List<Account>>(){}.getType();
@@ -233,6 +238,50 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
                     }
                 });
+    }
+
+    public void getAllJobs(){
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://bricolapp-daisousoft.rhcloud.com/getalljobs")
+                .build();
+
+        client.newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(final Call call, IOException e) {
+                        // Error
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // For the example, you can show an error dialog or a toast
+                                // on the main UI thread
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        final String res = response.body().string();
+                        mydb.deleteAllJobs();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String jsonData = res;
+                                Gson gson = new Gson();
+                                Type listType = new TypeToken<List<JobsObject>>(){}.getType();
+                                List<JobsObject> listjobs = (List<JobsObject>) gson.fromJson(jsonData, listType);
+                                for(JobsObject jb :listjobs) {
+                                    mydb.addJob(new Jobs(jb.get_idAccount(),jb.getIdjob()));
+                                }
+                            }
+                        });
+
+                    }
+                });
+
     }
 /**
      * Manipulates the map once available.

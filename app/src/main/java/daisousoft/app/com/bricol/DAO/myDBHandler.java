@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 import daisousoft.app.com.bricol.Models.Account;
+import daisousoft.app.com.bricol.Models.Jobs;
 
 /**
  * Created by HABABONGA on 28/10/2016.
@@ -26,8 +27,9 @@ public class myDBHandler extends SQLiteOpenHelper {
 
     // Table Names
     private static final String TABLE_ACCOUNT = "account";
+    private static final String TABLE_JOB = "job";
 
-    // LOAN Table - column names
+    // Account Table - column names
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_NAME = "_name";
     private static final String COLUMN_PHONENUMBER = "_phonenumber";
@@ -35,14 +37,20 @@ public class myDBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_LONG = "_long";
     private static final String COLUMN_STATUT = "_statut";
 
+    // Job Table - column names
+    private static final String COLUMN_ACCOUNT = "_idAccount";
+    private static final String COLUMN_JOBID = "idjob";
 
-    // LOAN table create statement
+    // ACCOUNT table create statement
     private static final String CREATE_TABLE_ACCOUNT = "CREATE TABLE "
             + TABLE_ACCOUNT + "(" + COLUMN_ID + " TEXT,"
             + COLUMN_NAME + " TEXT," + COLUMN_LAT
             + " REAL," + COLUMN_LONG + " REAL," + COLUMN_PHONENUMBER
             + " TEXT," + COLUMN_STATUT + " NUMERIC" + ")";
 
+    // JOB table create statement
+    private static final String CREATE_TABLE_JOB = "CREATE TABLE "+TABLE_JOB + "(" +
+            COLUMN_ACCOUNT +" TEXT,"+COLUMN_JOBID+" NUMERIC"+")";
 
     public myDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,6 +61,7 @@ public class myDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
         db.execSQL(CREATE_TABLE_ACCOUNT);
+        db.execSQL(CREATE_TABLE_JOB);
 
     }
 
@@ -60,6 +69,7 @@ public class myDBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_JOB);
         // create new tables
         onCreate(db);
 
@@ -169,5 +179,62 @@ public class myDBHandler extends SQLiteOpenHelper {
         db.execSQL("delete from "+ TABLE_ACCOUNT);
         db.close();
     }
+
+
+
+
+    /*
+* Creating ACCOUNT
+*/
+    public long addJob(Jobs job) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ACCOUNT, job.get_idAccount());
+        values.put(COLUMN_JOBID, job.getIdjob());
+
+
+
+        // insert row
+        long jooob_id = db.insert(TABLE_JOB, null, values);
+
+        return jooob_id;
+    }
+
+
+    /*
+* getting all Jobs for an account
+* */
+    public ArrayList<Jobs> getAllJobs(String IDaccount) {
+        ArrayList<Jobs> joobs = new ArrayList<Jobs>();
+        String selectQuery = "SELECT  * FROM " + TABLE_JOB + " WHERE "+ COLUMN_ACCOUNT +"='"+IDaccount+"'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Jobs jb = new Jobs();
+                jb.set_idAccount(c.getString(c.getColumnIndex(COLUMN_ACCOUNT)));
+                jb.setIdjob(c.getInt(c.getColumnIndex(COLUMN_JOBID)));
+
+                // adding to jobs list
+                joobs.add(jb);
+            } while (c.moveToNext());
+        }
+
+        return joobs;
+    }
+
+    /*
+    * Delete all JOBS
+    * */
+    public void deleteAllJobs() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_JOB);
+        db.close();
+    }
+
 
 }
