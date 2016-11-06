@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +22,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnBackPressListener;
+import com.orhanobut.dialogplus.OnCancelListener;
+import com.orhanobut.dialogplus.OnDismissListener;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -32,6 +37,7 @@ import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.Models.JobsObject;
+import daisousoft.app.com.bricol.Support.CustomAdapter;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
 import okhttp3.Call;
@@ -48,10 +54,10 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     double longitude;
     Button myProfil;
     PlayGifView pGif;
-    private static final String FORM_VIEW = "FORM_VIEW_MARKER";
     myDBHandler mydb ;
     ArrayList<Account> bricoList;
     Bundle bundle = new Bundle();
+    DialogPlus dialogPlus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,35 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
           //      .findFragmentById(R.id.infoWindowMap);
         //Synchronize fetcher = new Synchronize(this.getApplicationContext());
         //fetcher.execute();
+
+        Integer[] listJobs = {2131624106,2131624107,2131624108,2131624109,2131624110,2131624111,2131624112};
+
+        dialogPlus = DialogPlus.newDialog(this)
+                .setAdapter(new CustomAdapter(this, listJobs))
+                .setCancelable(true)
+                .setGravity(Gravity.CENTER)
+                .setExpanded(true, 400)
+                .setHeader(R.layout.header)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogPlus dialog) {
+
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogPlus dialog) {
+
+                    }
+                })
+                .setOnBackPressListener(new OnBackPressListener() {
+                    @Override
+                    public void onBackPressed(DialogPlus dialogPlus) {
+
+                    }
+                })
+                .create();
+
 
 
 
@@ -283,23 +318,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 });
 
     }
-/**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    /*@Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        //mMap.setBuildingsEnabled(true);
-        // Add a marker in Sydney and move the camera
-        LatLng me = new LatLng(33.605099,-7.48496);
-        mMap.addMarker(new MarkerOptions().position(me).title("Marouane Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 17.0f));
-
-    }*/
+    public void FilterJobs(View view){
+        dialogPlus.show();
+    }
 }

@@ -1,8 +1,8 @@
 package daisousoft.app.com.bricol;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
@@ -38,7 +40,7 @@ public class BricolleurActivity extends Activity {
     private TrackMe gps;
     private double latitude,longitude;
     String IdDevice,PhoneNumber;
-    ProgressDialog progress;
+    ACProgressFlower progress;
 
     myDBHandler mydb ;
 
@@ -74,9 +76,10 @@ public class BricolleurActivity extends Activity {
         // Initiate IdDevice and PhoneNumber
         IdDevice = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        progress = new ProgressDialog(BricolleurActivity.this);
-        progress.setTitle("Uploading");
-        progress.setMessage("Please wait...");
+        progress = new ACProgressFlower.Builder(BricolleurActivity.this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(Color.WHITE)
+                .fadeColor(Color.BLUE).build();
         progress.show();
         GetAccount(IdDevice);
         GetAllJobs(IdDevice);
