@@ -50,7 +50,7 @@ tools:context="daisousoft.app.com.bricol.MapsActivity">
         android:onClick="goToMyLocation"
         android:layout_alignBottom="@+id/profil"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button" />
+        android:id="@+id/toMe" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,10 +58,35 @@ tools:context="daisousoft.app.com.bricol.MapsActivity">
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="  All Jobs  "
         android:gravity="center"
-        android:id="@+id/textView"
-        android:background="@drawable/rounded_button"
-        android:layout_above="@+id/button"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/lookingFor"
+        android:layout_above="@+id/toMe"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:id="@+id/explain"
+        android:onClick="Showhow"
+        android:background="@drawable/explainapp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:src="@drawable/job1"
+    android:id="@+id/selectedjob"
+    android:layout_above="@+id/imageView"
+    android:layout_alignEnd="@+id/viewGif" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/selectlanguag"
+        android:onClick="SelectLanguage"
+        android:layout_above="@+id/imageView"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

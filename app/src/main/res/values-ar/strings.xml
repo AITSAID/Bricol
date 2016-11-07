@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BricolApp</string>
+    <string name="title_activity_maps">BricolApp</string>
+    <string name="job1">وظيفة 1</string>
+    <string name="job2">وظيفة 2</string>
+</resources>

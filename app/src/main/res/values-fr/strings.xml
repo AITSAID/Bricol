@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BricolApp</string>
     <string name="title_activity_maps">BricolApp</string>
-    <string name="job2">job 2</string>
-    <string name="job1">job 1</string>
+    <string name="job1">Emploi 1</string>
+    <string name="job2">Emploi 2</string>
 </resources>

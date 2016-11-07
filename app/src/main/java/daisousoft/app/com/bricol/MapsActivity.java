@@ -1,17 +1,29 @@
 package daisousoft.app.com.bricol;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,11 +38,13 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnCancelListener;
 import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.OnItemClickListener;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
@@ -46,18 +60,26 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener {
+public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener ,View.OnClickListener {
 
+    private ShowcaseView showcaseView;
+    private int counter = 0;
     public static GoogleMap mMap;
     private TrackMe gps;
     double latitude;
     double longitude;
-    Button myProfil;
+    Button myProfil,toMe;
     PlayGifView pGif;
+    ImageView selectedjob;
     myDBHandler mydb ;
     ArrayList<Account> bricoList;
     Bundle bundle = new Bundle();
-    DialogPlus dialogPlus;
+    DialogPlus dialogPlus,dialogLangue;
+    Integer[] listJobs = {2131624106,2131624107,2131624108,2131624109,2131624110,2131624111,2131624112};
+    int itemSelected;
+    TextView lookingFor;
+    String langueSelected;
+    Locale myLocale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,43 +90,17 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
           //      .findFragmentById(R.id.infoWindowMap);
         //Synchronize fetcher = new Synchronize(this.getApplicationContext());
         //fetcher.execute();
-
-        Integer[] listJobs = {2131624106,2131624107,2131624108,2131624109,2131624110,2131624111,2131624112};
-
-        dialogPlus = DialogPlus.newDialog(this)
-                .setAdapter(new CustomAdapter(this, listJobs))
-                .setCancelable(true)
-                .setGravity(Gravity.CENTER)
-                .setExpanded(true, 400)
-                .setHeader(R.layout.header)
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogPlus dialog) {
-
-                    }
-                })
-                .setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogPlus dialog) {
-
-                    }
-                })
-                .setOnBackPressListener(new OnBackPressListener() {
-                    @Override
-                    public void onBackPressed(DialogPlus dialogPlus) {
-
-                    }
-                })
-                .create();
-
-
-
+        //setLocale("ar");
 
         mydb = new myDBHandler(getApplicationContext());
 
+        toMe = (Button) findViewById(R.id.toMe);
         //ScrollView verticalScrollView = (ScrollView) findViewById(R.id.vertical_scroll_view);
         //OverScrollDecoratorHelper.setUpOverScroll(verticalScrollView);
         myProfil = (Button) findViewById(R.id.profil);
+        selectedjob = (ImageView) findViewById(R.id.selectedjob);
+        selectedjob.setVisibility(View.GONE);
+        lookingFor = (TextView) findViewById(R.id.lookingFor);
         pGif = (PlayGifView) findViewById(R.id.viewGif);
         pGif.setImageResource(R.drawable.radar);
         gps = new TrackMe(MapsActivity.this);
@@ -319,6 +315,200 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     }
     public void FilterJobs(View view){
+        dialogPlus = DialogPlus.newDialog(this)
+                .setAdapter(new CustomAdapter(this, listJobs))
+                .setCancelable(true)
+                .setGravity(Gravity.CENTER)
+                .setExpanded(true, 400)
+                .setHeader(R.layout.header)
+                .setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                        itemSelected =(Integer)item;
+                        LookingForJobs(itemSelected);
+                        //lookingFor.setText(itemSelected+"");
+                        ArrayList<String> listAccouts = mydb.getAccountbyJob(itemSelected);
+                        mMap.clear();
+                        for (String act : listAccouts){
+                            Account cc = mydb.getAccountByID(act);
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(cc.get_lat(), cc.get_long())).snippet(cc.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        }
+                        dialogPlus.dismiss();
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogPlus dialog) {
+
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogPlus dialog) {
+
+                    }
+                })
+                .setOnBackPressListener(new OnBackPressListener() {
+                    @Override
+                    public void onBackPressed(DialogPlus dialogPlus) {
+
+                    }
+                })
+                .create();
+
+
         dialogPlus.show();
     }
+
+    public void LookingForJobs(int singleJob){
+        if(2131624106==singleJob){
+            lookingFor.setText(getResources().getString(R.string.job1));
+            selectedjob.setImageResource(R.drawable.job1);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+        if(2131624107==singleJob){
+            lookingFor.setText(getResources().getString(R.string.job2));
+            selectedjob.setImageResource(R.drawable.job2);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+        if(2131624108==singleJob){
+            lookingFor.setText("job3");
+            selectedjob.setImageResource(R.drawable.job3);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+        if(2131624109==singleJob){
+            lookingFor.setText("job4");
+            selectedjob.setImageResource(R.drawable.job4);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+        if(2131624110==singleJob){
+            lookingFor.setText("job5");
+            selectedjob.setImageResource(R.drawable.job5);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+        if(2131624111==singleJob){
+            lookingFor.setText("job6");
+            selectedjob.setImageResource(R.drawable.job6);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+        if(2131624112==singleJob){
+            lookingFor.setText("job7");
+            selectedjob.setImageResource(R.drawable.job7);
+            selectedjob.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private void setAlpha(float alpha, View... views) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            for (View view : views) {
+                view.setAlpha(alpha);
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setShowcase(new ViewTarget(toMe), true);
+                break;
+
+            case 1:
+                showcaseView.setShowcase(new ViewTarget(pGif), true);
+                break;
+
+            case 2:
+                showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentTitle("Check it out");
+                showcaseView.setContentText("You don't always need a target to showcase");
+                showcaseView.setButtonText("Close");
+                setAlpha(0.4f, myProfil, toMe, pGif);
+                break;
+
+            case 3:
+                showcaseView.hide();
+                setAlpha(1.0f, myProfil, toMe, pGif);
+                break;
+        }
+        counter++;
+    }
+
+    public void Showhow(View view){
+        counter=0;
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(new ViewTarget(findViewById(R.id.profil)))
+                .setOnClickListener(this)
+                .build();
+        showcaseView.setButtonText("Next");
+
+    }
+
+    public void setLocale(String lang) {
+
+        myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        String langPref = "Language";
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs",
+                Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(langPref, lang);
+        editor.commit();
+        Intent refresh = new Intent(this, MapsActivity.class);
+        startActivity(refresh);
+
+    }
+
+    public void SelectLanguage(View view){
+        String[] languages = {"العربية","Français","English","にほん"};
+        dialogPlus = DialogPlus.newDialog(this)
+                .setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_checked,languages))
+                .setCancelable(true)
+                .setGravity(Gravity.TOP)
+                .setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                        langueSelected =(String)item;
+                        if(position==0){
+                        setLocale("ar");}
+                        if(position==1){
+                            setLocale("fr");}
+                        if(position==2){
+                            setLocale("en");}
+                        if(position==3){
+                            setLocale("ja");}
+                        dialogPlus.dismiss();
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogPlus dialog) {
+
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogPlus dialog) {
+
+                    }
+                })
+                .setOnBackPressListener(new OnBackPressListener() {
+                    @Override
+                    public void onBackPressed(DialogPlus dialogPlus) {
+
+                    }
+                })
+                .create();
+
+
+        dialogPlus.show();
+
+
+    }
+
+
 }

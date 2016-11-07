@@ -228,6 +228,29 @@ public class myDBHandler extends SQLiteOpenHelper {
     }
 
     /*
+* getting all Jobs for an account
+* */
+    public ArrayList<String> getAccountbyJob(int idJob) {
+        ArrayList<String> joobs = new ArrayList<String>();
+        String selectQuery = "SELECT  * FROM " + TABLE_JOB + " WHERE "+ COLUMN_JOBID +"='"+idJob+"'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                String result;
+                result = c.getString(c.getColumnIndex(COLUMN_ACCOUNT));
+                // adding to Accounts ID list
+                joobs.add(result);
+            } while (c.moveToNext());
+        }
+
+        return joobs;
+    }
+
+    /*
     * Delete all JOBS
     * */
     public void deleteAllJobs() {
