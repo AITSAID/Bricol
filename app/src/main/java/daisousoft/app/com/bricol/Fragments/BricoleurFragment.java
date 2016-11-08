@@ -91,7 +91,7 @@ public class BricoleurFragment extends Fragment {
         //phonebrico.setText(mydb.getAllAccounts().size()+"");
         int choose = checkEmptyChoice();
 
-        if(2131624106==idjob){
+        if(111==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job1));
                 c1.setTag("full");
@@ -110,7 +110,7 @@ public class BricoleurFragment extends Fragment {
                 }
             }
         }
-        if(2131624107==idjob){
+        if(222==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job2));
                 c1.setTag("full");
@@ -129,7 +129,7 @@ public class BricoleurFragment extends Fragment {
                 }
             }
         }
-        if(2131624108==idjob){
+        if(333==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job3));
                 c1.setTag("full");
@@ -148,7 +148,7 @@ public class BricoleurFragment extends Fragment {
                 }
             }
         }
-        if(2131624109==idjob){
+        if(444==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job4));
                 c1.setTag("full");
@@ -168,7 +168,7 @@ public class BricoleurFragment extends Fragment {
             }
         }
 
-        if(2131624110==idjob){
+        if(555==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job5));
                 c1.setTag("full");
@@ -188,7 +188,7 @@ public class BricoleurFragment extends Fragment {
             }
         }
 
-        if(2131624111==idjob){
+        if(666==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job6));
                 c1.setTag("full");
@@ -207,7 +207,7 @@ public class BricoleurFragment extends Fragment {
                 }
             }
         }
-        if(2131624112==idjob){
+        if(777==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job7));
                 c1.setTag("full");

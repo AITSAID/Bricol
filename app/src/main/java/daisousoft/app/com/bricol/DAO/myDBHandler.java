@@ -259,5 +259,14 @@ public class myDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /*
+    * Delete JOB By Id
+    * */
+    public void deleteJobById(String idDevice , int idJob) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_JOB+" where "+COLUMN_ACCOUNT+ "='" + idDevice + "' AND "+COLUMN_JOBID+" ='"+idJob+"'");
+        db.close();
+    }
+
 
 }

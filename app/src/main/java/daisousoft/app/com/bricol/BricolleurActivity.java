@@ -1,11 +1,8 @@
 package daisousoft.app.com.bricol;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,9 +15,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
@@ -41,7 +38,7 @@ public class BricolleurActivity extends Activity {
     private double latitude,longitude;
     String IdDevice,PhoneNumber;
     ACProgressFlower progress;
-
+    ArrayList<Jobs> myjobs;
     myDBHandler mydb ;
 
     @Override
@@ -53,12 +50,19 @@ public class BricolleurActivity extends Activity {
         OverScrollDecoratorHelper.setUpOverScroll(horizontalScrollView);
 
         j1 = (Button)findViewById(R.id.job1);
+        j1.setTag(111);
         j2 = (Button)findViewById(R.id.job2);
+        j2.setTag(222);
         j3 = (Button)findViewById(R.id.job3);
+        j3.setTag(333);
         j4 = (Button)findViewById(R.id.job4);
+        j4.setTag(444);
         j5 = (Button)findViewById(R.id.job5);
+        j5.setTag(555);
         j6 = (Button)findViewById(R.id.job6);
+        j6.setTag(666);
         j7 = (Button)findViewById(R.id.job7);
+        j7.setTag(777);
 
         namebricp = (EditText) findViewById(R.id.namebrico) ;
         phonebrico = (EditText) findViewById(R.id.phonebrico);
@@ -71,18 +75,26 @@ public class BricolleurActivity extends Activity {
         c3.setTag(c3.getId());
 
         //
-        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        //TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
 
         // Initiate IdDevice and PhoneNumber
         IdDevice = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        progress = new ACProgressFlower.Builder(BricolleurActivity.this)
+        /*progress = new ACProgressFlower.Builder(BricolleurActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(Color.WHITE)
                 .fadeColor(Color.BLUE).build();
-        progress.show();
-        GetAccount(IdDevice);
-        GetAllJobs(IdDevice);
+        progress.show();*/
+        mydb = new myDBHandler(getApplicationContext());
+        Account myaccount = mydb.getAccountByID(IdDevice);
+        phonebrico.setText(myaccount.get_phonenumber());
+        namebricp.setText(myaccount.get_name());
+        myjobs = mydb.getAllJobs(IdDevice);
+        for(Jobs jb:myjobs){
+            EnableJobs(jb.getIdjob());
+        }
+        //GetAccount(IdDevice);
+        //GetAllJobs(IdDevice);
         //PhoneNumber = tMgr.getSimSerialNumber();
 
         //phonebrico.setText(PhoneNumber);
@@ -124,10 +136,11 @@ public class BricolleurActivity extends Activity {
         }
 
         if(choose!=0){
-            Jobs job =new Jobs(IdDevice,view.getId());
+            Jobs job =new Jobs(IdDevice,(int)view.getTag());
             Gson gson = new Gson();
             String json = gson.toJson(job);
             ExecuteRequest("ajouterjobs?job",json);
+            mydb.addJob(job);
 
         }
 
@@ -139,22 +152,22 @@ public class BricolleurActivity extends Activity {
         //phonebrico.setText(mydb.getAllAccounts().size()+"");
         int choose = checkEmptyChoice();
 
-        if(j1.getId()==idjob){
+        if((int)j1.getTag()==idjob){
             if(choose == 1 ){
                 c1.setBackground(j1.getBackground());
-                c1.setTag(j1.getId());
+                c1.setTag(j1.getTag());
                 j1.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j1.getBackground());
-                    c2.setTag(j1.getId());
+                    c2.setTag(j1.getTag());
                     j1.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j1.getBackground());
-                        c3.setTag(j1.getId());
+                        c3.setTag(j1.getTag());
                         j1.setVisibility(View.GONE);
 
                     }else{
@@ -164,22 +177,22 @@ public class BricolleurActivity extends Activity {
                 }
             }
         }
-        if(j2.getId()==idjob){
+        if((int)j2.getTag()==idjob){
             if(choose == 1 ){
                 c1.setBackground(j2.getBackground());
-                c1.setTag(j2.getId());
+                c1.setTag(j2.getTag());
                 j2.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j2.getBackground());
-                    c2.setTag(j2.getId());
+                    c2.setTag(j2.getTag());
                     j2.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j2.getBackground());
-                        c3.setTag(j2.getId());
+                        c3.setTag(j2.getTag());
                         j2.setVisibility(View.GONE);
 
                     }else{
@@ -190,22 +203,22 @@ public class BricolleurActivity extends Activity {
             }
 
         }
-        if(j3.getId()==idjob){
+        if((int)j3.getTag()==idjob){
             if(choose == 1 ){
                 c1.setBackground(j3.getBackground());
-                c1.setTag(j3.getId());
+                c1.setTag(j3.getTag());
                 j3.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j3.getBackground());
-                    c2.setTag(j3.getId());
+                    c2.setTag(j3.getTag());
                     j3.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j3.getBackground());
-                        c3.setTag(j3.getId());
+                        c3.setTag(j3.getTag());
                         j3.setVisibility(View.GONE);
 
                     }else{
@@ -216,22 +229,22 @@ public class BricolleurActivity extends Activity {
             }
 
         }
-        if(j4.getId()==idjob){
+        if((int)j4.getTag()==idjob){
             if(choose == 1 ){
                 c1.setBackground(j4.getBackground());
-                c1.setTag(j4.getId());
+                c1.setTag(j4.getTag());
                 j4.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j4.getBackground());
-                    c2.setTag(j4.getId());
+                    c2.setTag(j4.getTag());
                     j4.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j4.getBackground());
-                        c3.setTag(j4.getId());
+                        c3.setTag(j4.getTag());
                         j4.setVisibility(View.GONE);
 
                     }else{
@@ -241,22 +254,22 @@ public class BricolleurActivity extends Activity {
                 }
             }
         }
-        if(j5.getId()==idjob){
+        if((int)j5.getTag()==idjob){
             if(choose == 1 ){
                 c1.setBackground(j5.getBackground());
-                c1.setTag(j5.getId());
+                c1.setTag(j5.getTag());
                 j5.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j5.getBackground());
-                    c2.setTag(j5.getId());
+                    c2.setTag(j5.getTag());
                     j5.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j5.getBackground());
-                        c3.setTag(j5.getId());
+                        c3.setTag(j5.getTag());
                         j5.setVisibility(View.GONE);
 
                     }else{
@@ -266,22 +279,22 @@ public class BricolleurActivity extends Activity {
                 }
             }
         }
-        if(j6.getId()==idjob){
+        if((int)j6.getTag()==idjob){
             if(choose == 1 ){
                 c1.setBackground(j6.getBackground());
-                c1.setTag(j6.getId());
+                c1.setTag(j6.getTag());
                 j6.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j6.getBackground());
-                    c2.setTag(j6.getId());
+                    c2.setTag(j6.getTag());
                     j6.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j6.getBackground());
-                        c3.setTag(j6.getId());
+                        c3.setTag(j6.getTag());
                         j6.setVisibility(View.GONE);
 
                     }else{
@@ -292,23 +305,23 @@ public class BricolleurActivity extends Activity {
             }
 
         }
-        if(j7.getId()==idjob){
+        if((int)j7.getTag()==idjob){
 
             if(choose == 1 ){
                 c1.setBackground(j7.getBackground());
-                c1.setTag(j7.getId());
-                j1.setVisibility(View.GONE);
+                c1.setTag(j7.getTag());
+                j7.setVisibility(View.GONE);
 
             }else{
                 if(choose == 2){
                     c2.setBackground(j7.getBackground());
-                    c2.setTag(j1.getId());
+                    c2.setTag(j7.getTag());
                     j7.setVisibility(View.GONE);
 
                 }else{
                     if(choose == 3){
                         c3.setBackground(j7.getBackground());
-                        c3.setTag(j7.getId());
+                        c3.setTag(j7.getTag());
                         j7.setVisibility(View.GONE);
 
                     }else{
@@ -342,53 +355,53 @@ public class BricolleurActivity extends Activity {
     public void UnCheckJob(View view){
         int id = 0;
 
-        if(view.getTag().equals(j1.getId())){
+        if(view.getTag().equals(j1.getTag())){
             j1.setVisibility(View.VISIBLE);
-            j1.setBackgroundResource(R.drawable.job1);
             view.setTag(view.getId());
+            id=111;
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j1.getId();
         }
-        if(view.getTag().equals(j2.getId())){
+        if(view.getTag().equals(j2.getTag())){
             j2.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
+            id=222;
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j2.getId();
         }
-        if(view.getTag().equals(j3.getId())){
+        if(view.getTag().equals(j3.getTag())){
             j3.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
+            id=333;
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j3.getId();
         }
-        if(view.getTag().equals(j4.getId())){
+        if(view.getTag().equals(j4.getTag())){
             j4.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
+            id=444;
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j4.getId();
         }
-        if(view.getTag().equals(j5.getId())){
+        if(view.getTag().equals(j5.getTag())){
             j5.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
+            id=555;
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j5.getId();
         }
-        if(view.getTag().equals(j6.getId())){
+        if(view.getTag().equals(j6.getTag())){
             j6.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
+            id=666;
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j6.getId();
         }
-        if(view.getTag().equals(j7.getId())){
+        if(view.getTag().equals(j7.getTag())){
             j7.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             view.setBackgroundResource(R.drawable.anonymejob);
-            id =j7.getId();
+            id=777;
         }
         Jobs job = new Jobs(IdDevice,id);
         Gson gson = new Gson();
         String json = gson.toJson(job);
         ExecuteRequest("deletejobs?job",json);
+        mydb.deleteJobById(IdDevice,id);
 
     }
 
@@ -432,8 +445,7 @@ public class BricolleurActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                // For the example, you can show an error dialog or a toast
-                                // on the main UI thread
+
                             }
                         });
                     }
@@ -442,7 +454,7 @@ public class BricolleurActivity extends Activity {
                     public void onResponse(Call call, final Response response) throws IOException {
                         String res = response.body().string();
 
-                        // Do something with the response
+
                     }
                 });
     }
@@ -525,7 +537,7 @@ public class BricolleurActivity extends Activity {
                                 }
                             }
                         });
-                        progress.dismiss();
+                        //progress.dismiss();
 
                     }
                 });

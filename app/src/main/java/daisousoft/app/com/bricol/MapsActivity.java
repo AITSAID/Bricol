@@ -75,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     ArrayList<Account> bricoList;
     Bundle bundle = new Bundle();
     DialogPlus dialogPlus,dialogLangue;
-    Integer[] listJobs = {2131624106,2131624107,2131624108,2131624109,2131624110,2131624111,2131624112};
+    Integer[] listJobs = {111,222,333,444,555,666,777};
     int itemSelected;
     TextView lookingFor;
     String langueSelected;
@@ -258,8 +258,10 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                 Gson gson = new Gson();
                                 Type listType = new TypeToken<List<Account>>(){}.getType();
                                 List<Account> listaccounts = (List<Account>) gson.fromJson(jsonData, listType);
+                                //IconGenerator  mIcon = new IconGenerator(getApplicationContext());
                                 for(Account ac :listaccounts) {
                                     mydb.addAccount(ac);
+                                    //Bitmap iconBitMap = mIcon.makeIcon(ac.get_name());
                                     if(ac!=null) {
                                         mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                                     }
@@ -464,7 +466,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     }
 
     public void SelectLanguage(View view){
-        String[] languages = {"العربية","Français","English","にほん"};
+        String[] languages = {"العربية","Français","English","にほん","Español","Deutsch","русский"};
         dialogPlus = DialogPlus.newDialog(this)
                 .setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_checked,languages))
                 .setCancelable(true)

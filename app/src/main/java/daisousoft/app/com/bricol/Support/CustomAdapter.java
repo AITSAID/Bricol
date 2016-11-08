@@ -27,31 +27,31 @@ public class CustomAdapter extends ArrayAdapter<Integer> {
         ImageView jobImg =(ImageView) myView.findViewById(R.id.jobImg);
 
 
-        if(2131624106==singleJob){
+        if(111==singleJob){
             jobName.setText("job1");
             jobImg.setImageResource(R.drawable.job1);
         }
-        if(2131624107==singleJob){
+        if(222==singleJob){
             jobName.setText("job2");
             jobImg.setImageResource(R.drawable.job2);
         }
-        if(2131624108==singleJob){
+        if(333==singleJob){
             jobName.setText("job3");
             jobImg.setImageResource(R.drawable.job3);
         }
-        if(2131624109==singleJob){
+        if(444==singleJob){
             jobName.setText("job4");
             jobImg.setImageResource(R.drawable.job4);
         }
-        if(2131624110==singleJob){
+        if(555==singleJob){
             jobName.setText("job5");
             jobImg.setImageResource(R.drawable.job5);
         }
-        if(2131624111==singleJob){
+        if(666==singleJob){
             jobName.setText("job6");
             jobImg.setImageResource(R.drawable.job6);
         }
-        if(2131624112==singleJob){
+        if(777==singleJob){
             jobName.setText("job7");
             jobImg.setImageResource(R.drawable.job7);
         }

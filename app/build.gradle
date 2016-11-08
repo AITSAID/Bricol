@@ -39,4 +39,5 @@ dependencies {
     compile 'com.orhanobut:dialogplus:1.11@aar'
     compile 'cc.cloudist.acplibrary:library:1.2.1'
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    compile 'com.google.maps.android:android-maps-utils:0.2+'
 }
