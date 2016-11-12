@@ -3,72 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="daisousoft.app.com.bricol.BricolleurActivity">
+    tools:context="daisousoft.app.com.bricol.BricolleurActivity"
+    android:background="#d5d1d1">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:id="@+id/horizontal_scroll_view"
-        android:layout_below="@+id/imageview"
-        android:layout_marginTop="80dp"
-        android:layout_alignParentEnd="true">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/job1"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job1"/>
-
-        <Button
-            android:id="@+id/job2"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job2" />
-
-        <Button
-            android:id="@+id/job3"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job3" />
-
-        <Button
-            android:id="@+id/job4"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job4" />
-
-        <Button
-            android:id="@+id/job5"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job5" />
-
-        <Button
-            android:id="@+id/job6"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job6" />
-
-        <Button
-            android:id="@+id/job7"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:onClick="ChooseJob"
-            android:background="@drawable/job7"/>
-
-
-    </LinearLayout>
-    </HorizontalScrollView>
+        android:scrollbars="none"
+        android:layout_above="@+id/choice1"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"></HorizontalScrollView>
 
 
     <EditText
@@ -81,25 +26,27 @@
         android:textCursorDrawable="@color/cast_expanded_controller_ad_container_white_stripe_color"
         android:drawableLeft="@android:drawable/ic_menu_myplaces"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/save" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:id="@+id/save"
         android:onClick="SaveAccount"
-        android:background="@drawable/yesbutton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:text="Locate/Update"
+        android:layout_above="@+id/textView3"
+        android:layout_alignParentEnd="true"
+        android:background="@color/material_deep_teal_500" />
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:id="@+id/delete"
-        android:background="@drawable/nobutton"
         android:onClick="UnSaveAccount"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:text="Dislocate"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/holo_red_light" />
 
     <ImageView
         android:layout_width="100dp"
@@ -110,31 +57,32 @@
         android:layout_alignStart="@+id/horizontal_scroll_view" />
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/choice2"
-        android:background="@drawable/anonymejob"
-        android:onClick="UnCheckJob"
-        android:layout_above="@+id/delete"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/choice3"
         android:background="@drawable/anonymejob"
         android:onClick="UnCheckJob"
-        android:layout_above="@+id/choice2"
-        android:layout_toEndOf="@+id/choice2" />
+        android:layout_below="@+id/choice2"
+        android:layout_alignStart="@+id/choice2" />
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/choice2"
+        android:background="@drawable/anonymejob"
+        android:onClick="UnCheckJob"
+        android:layout_below="@+id/choice1"
+        android:layout_alignStart="@+id/choice1" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/choice1"
         android:background="@drawable/anonymejob"
         android:onClick="UnCheckJob"
-        android:layout_above="@+id/choice2"
-        android:layout_toStartOf="@+id/choice2" />
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -147,4 +95,123 @@
         android:layout_below="@+id/namebrico"
         android:layout_alignStart="@+id/namebrico" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Please pick your Jobs - 3 MAX"
+        android:gravity="center"
+        android:id="@+id/textView"
+        android:layout_above="@+id/horizontal_scroll_view"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Job1"
+        android:gravity="center"
+        android:id="@+id/textView2"
+        android:layout_toEndOf="@+id/choice1"
+        android:layout_alignTop="@+id/choice1"
+        android:layout_above="@+id/choice2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Job 2"
+        android:gravity="center"
+        android:id="@+id/textView3"
+        android:layout_toEndOf="@+id/choice2"
+        android:layout_alignTop="@+id/choice2"
+        android:layout_above="@+id/textView4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Job 3"
+        android:id="@+id/textView4"
+        android:gravity="center"
+        android:layout_toEndOf="@+id/choice2"
+        android:layout_alignBottom="@+id/choice3"
+        android:layout_below="@+id/choice2" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/profil"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/footer"
+        android:id="@+id/imageView" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignTop="@+id/horizontal_scroll_view"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/job1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job1"/>
+
+        <Button
+            android:id="@+id/job2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job2" />
+
+        <Button
+            android:id="@+id/job3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job3" />
+
+        <Button
+            android:id="@+id/job4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job4" />
+
+        <Button
+            android:id="@+id/job5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job5" />
+
+        <Button
+            android:id="@+id/job6"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job6" />
+
+        <Button
+            android:id="@+id/job7"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="ChooseJob"
+            android:background="@drawable/job7"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:id="@+id/explain"
+        android:onClick="Showhow"
+        android:background="@drawable/explainapp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

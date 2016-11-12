@@ -3,6 +3,7 @@ package daisousoft.app.com.bricol;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -17,12 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.clustering.ClusterManager;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnCancelListener;
@@ -51,6 +54,7 @@ import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.Models.JobsObject;
+import daisousoft.app.com.bricol.Models.MyItem;
 import daisousoft.app.com.bricol.Support.CustomAdapter;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
@@ -68,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     private TrackMe gps;
     double latitude;
     double longitude;
-    Button myProfil,toMe;
+    Button myProfil,languagebutton,explain;
     PlayGifView pGif;
     ImageView selectedjob;
     myDBHandler mydb ;
@@ -80,6 +84,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     TextView lookingFor;
     String langueSelected;
     Locale myLocale;
+    private ClusterManager<MyItem> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,16 +93,16 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
           //      .findFragmentById(R.id.infoWindowMap);
-        //Synchronize fetcher = new Synchronize(this.getApplicationContext());
-        //fetcher.execute();
+
         //setLocale("ar");
 
         mydb = new myDBHandler(getApplicationContext());
 
-        toMe = (Button) findViewById(R.id.toMe);
         //ScrollView verticalScrollView = (ScrollView) findViewById(R.id.vertical_scroll_view);
         //OverScrollDecoratorHelper.setUpOverScroll(verticalScrollView);
         myProfil = (Button) findViewById(R.id.profil);
+        explain = (Button) findViewById(R.id.explain);
+        languagebutton = (Button) findViewById(R.id.languagebutton);
         selectedjob = (ImageView) findViewById(R.id.selectedjob);
         selectedjob.setVisibility(View.GONE);
         lookingFor = (TextView) findViewById(R.id.lookingFor);
@@ -113,6 +118,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             gps.showSettingsAlert();
         }
 
+
         final MapInfoWindowFragment mapInfoWindowFragment =
                 (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.infoWindowMap);
 
@@ -124,7 +130,22 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 bricoList = mydb.getAllAccounts();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+
+                } else {
+                    Toast.makeText(MapsActivity.this, "You have to accept to enjoy all app's services!", Toast.LENGTH_LONG).show();
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        mMap.setMyLocationEnabled(true);
+                    }
+                }
+                /*CameraUpdate mylocation = CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(latitude,longitude), 13);
+                mMap.animateCamera(mylocation);*/
+                mClusterManager = new ClusterManager<MyItem>(getApplicationContext(), mMap);
+
                 getAllAccounts();
                 getAllJobs();
 
@@ -214,7 +235,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             gps.showSettingsAlert();
         }
         CameraUpdate mylocation = CameraUpdateFactory.newLatLngZoom(
-                new LatLng(latitude,longitude), 15);
+                new LatLng(latitude,longitude), 13);
         mMap.animateCamera(mylocation);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
     }
@@ -262,8 +283,9 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                 for(Account ac :listaccounts) {
                                     mydb.addAccount(ac);
                                     //Bitmap iconBitMap = mIcon.makeIcon(ac.get_name());
-                                    if(ac!=null) {
+                                    if(ac!=null  &&  ac.get_statut()==1) {
                                         mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                        mClusterManager.addItem(new MyItem(ac.get_lat(),ac.get_long()));
                                     }
                                 }
                             }
@@ -320,8 +342,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         dialogPlus = DialogPlus.newDialog(this)
                 .setAdapter(new CustomAdapter(this, listJobs))
                 .setCancelable(true)
-                .setGravity(Gravity.CENTER)
-                .setExpanded(true, 400)
+                .setGravity(Gravity.BOTTOM)
                 .setHeader(R.layout.header)
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
@@ -363,37 +384,37 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     }
 
     public void LookingForJobs(int singleJob){
-        if(2131624106==singleJob){
+        if(111==singleJob){
             lookingFor.setText(getResources().getString(R.string.job1));
             selectedjob.setImageResource(R.drawable.job1);
             selectedjob.setVisibility(View.VISIBLE);
         }
-        if(2131624107==singleJob){
+        if(222==singleJob){
             lookingFor.setText(getResources().getString(R.string.job2));
             selectedjob.setImageResource(R.drawable.job2);
             selectedjob.setVisibility(View.VISIBLE);
         }
-        if(2131624108==singleJob){
+        if(333==singleJob){
             lookingFor.setText("job3");
             selectedjob.setImageResource(R.drawable.job3);
             selectedjob.setVisibility(View.VISIBLE);
         }
-        if(2131624109==singleJob){
+        if(444==singleJob){
             lookingFor.setText("job4");
             selectedjob.setImageResource(R.drawable.job4);
             selectedjob.setVisibility(View.VISIBLE);
         }
-        if(2131624110==singleJob){
+        if(555==singleJob){
             lookingFor.setText("job5");
             selectedjob.setImageResource(R.drawable.job5);
             selectedjob.setVisibility(View.VISIBLE);
         }
-        if(2131624111==singleJob){
+        if(666==singleJob){
             lookingFor.setText("job6");
             selectedjob.setImageResource(R.drawable.job6);
             selectedjob.setVisibility(View.VISIBLE);
         }
-        if(2131624112==singleJob){
+        if(777==singleJob){
             lookingFor.setText("job7");
             selectedjob.setImageResource(R.drawable.job7);
             selectedjob.setVisibility(View.VISIBLE);
@@ -413,7 +434,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     public void onClick(View v) {
         switch (counter) {
             case 0:
-                showcaseView.setShowcase(new ViewTarget(toMe), true);
+                showcaseView.setShowcase(new ViewTarget(explain), true);
                 break;
 
             case 1:
@@ -421,17 +442,14 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 break;
 
             case 2:
-                showcaseView.setTarget(Target.NONE);
-                showcaseView.setContentTitle("Check it out");
-                showcaseView.setContentText("You don't always need a target to showcase");
+                showcaseView.setShowcase(new ViewTarget(languagebutton), true);
                 showcaseView.setButtonText("Close");
-                setAlpha(0.4f, myProfil, toMe, pGif);
                 break;
-
             case 3:
                 showcaseView.hide();
-                setAlpha(1.0f, myProfil, toMe, pGif);
                 break;
+
+
         }
         counter++;
     }
@@ -512,5 +530,17 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getAllAccounts();
+        getAllJobs();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAllAccounts();
+        getAllJobs();
+    }
 }

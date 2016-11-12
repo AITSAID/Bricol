@@ -1,8 +1,10 @@
 package daisousoft.app.com.bricol;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -40,6 +42,7 @@ public class BricolleurActivity extends Activity {
     ACProgressFlower progress;
     ArrayList<Jobs> myjobs;
     myDBHandler mydb ;
+    Account myaccount ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,7 @@ public class BricolleurActivity extends Activity {
                 .fadeColor(Color.BLUE).build();
         progress.show();*/
         mydb = new myDBHandler(getApplicationContext());
-        Account myaccount = mydb.getAccountByID(IdDevice);
+        myaccount = mydb.getAccountByID(IdDevice);
         phonebrico.setText(myaccount.get_phonenumber());
         namebricp.setText(myaccount.get_name());
         myjobs = mydb.getAllJobs(IdDevice);
@@ -113,19 +116,19 @@ public class BricolleurActivity extends Activity {
         int choose = checkEmptyChoice();
         if(choose == 1 ){
             c1.setBackground(view.getBackground());
-            c1.setTag(view.getId());
+            c1.setTag(view.getTag());
             view.setVisibility(View.GONE);
 
         }else{
             if(choose == 2){
                 c2.setBackground(view.getBackground());
-                c2.setTag(view.getId());
+                c2.setTag(view.getTag());
                 view.setVisibility(View.GONE);
 
             }else{
                 if(choose == 3){
                     c3.setBackground(view.getBackground());
-                    c3.setTag(view.getId());
+                    c3.setTag(view.getTag());
                     view.setVisibility(View.GONE);
 
                 }else{
@@ -338,13 +341,13 @@ public class BricolleurActivity extends Activity {
 
 
     public int checkEmptyChoice() {
-        if (c1.getTag().equals(c1.getId())) {
+        if ((int)c1.getTag()==c1.getId()) {
             return 1;
         } else {
-            if (c2.getTag().equals(c2.getId())) {
+            if ((int)c2.getTag()== c2.getId()) {
                 return 2;
             } else {
-                if (c3.getTag().equals(c3.getId())) {
+                if ((int)c3.getTag()==c3.getId()) {
                     return 3;
                 }
             }
@@ -355,43 +358,43 @@ public class BricolleurActivity extends Activity {
     public void UnCheckJob(View view){
         int id = 0;
 
-        if(view.getTag().equals(j1.getTag())){
+        if((int)view.getTag()== (int)j1.getTag()){
             j1.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             id=111;
             view.setBackgroundResource(R.drawable.anonymejob);
         }
-        if(view.getTag().equals(j2.getTag())){
+        if((int) view.getTag()==(int)j2.getTag()){
             j2.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             id=222;
             view.setBackgroundResource(R.drawable.anonymejob);
         }
-        if(view.getTag().equals(j3.getTag())){
+        if((int)view.getTag()== (int)j3.getTag()){
             j3.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             id=333;
             view.setBackgroundResource(R.drawable.anonymejob);
         }
-        if(view.getTag().equals(j4.getTag())){
+        if((int)view.getTag()==(int)j4.getTag()){
             j4.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             id=444;
             view.setBackgroundResource(R.drawable.anonymejob);
         }
-        if(view.getTag().equals(j5.getTag())){
+        if((int)view.getTag()== (int)j5.getTag()){
             j5.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             id=555;
             view.setBackgroundResource(R.drawable.anonymejob);
         }
-        if(view.getTag().equals(j6.getTag())){
+        if((int)view.getTag()== (int)j6.getTag()){
             j6.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             id=666;
             view.setBackgroundResource(R.drawable.anonymejob);
         }
-        if(view.getTag().equals(j7.getTag())){
+        if((int)view.getTag()== (int)j7.getTag()){
             j7.setVisibility(View.VISIBLE);
             view.setTag(view.getId());
             view.setBackgroundResource(R.drawable.anonymejob);
@@ -406,21 +409,43 @@ public class BricolleurActivity extends Activity {
     }
 
     public void SaveAccount(View view){
-        gps = new TrackMe(BricolleurActivity.this);
-        if(gps.canGetLocation()){
-            latitude = gps .getLatitude();
-            longitude = gps.getLongitude();
-        }
-        else
-        {
-            gps.showSettingsAlert();
-        }
-        Account account = new Account(IdDevice,namebricp.getText().toString(),phonebrico.getText().toString(),latitude,longitude,1) ;
-        //mydb.addAccount(account);
-        Gson gson = new Gson();
-        String json = gson.toJson(account);
-        Toast.makeText(getApplicationContext(),"Working on it "+json,Toast.LENGTH_LONG).show();
-        addAccount(json);
+        AlertDialog.Builder alert = new AlertDialog.Builder(
+                BricolleurActivity.this);
+        alert.setTitle("Alert!!");
+        alert.setMessage("Are you sure to locate Yourself");
+        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gps = new TrackMe(BricolleurActivity.this);
+                if(gps.canGetLocation()){
+                    latitude = gps .getLatitude();
+                    longitude = gps.getLongitude();
+                }
+                else
+                {
+                    gps.showSettingsAlert();
+                }
+                Account account = new Account(IdDevice,namebricp.getText().toString(),phonebrico.getText().toString(),latitude,longitude,1) ;
+                //mydb.addAccount(account);
+                Gson gson = new Gson();
+                String json = gson.toJson(account);
+                //Toast.makeText(getApplicationContext(),"Working on it "+json,Toast.LENGTH_LONG).show();
+                addAccount(json);
+                dialog.dismiss();
+
+            }
+        });
+        alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
 
     }
 
@@ -541,6 +566,36 @@ public class BricolleurActivity extends Activity {
 
                     }
                 });
+
+    }
+
+    public void UnSaveAccount(View view){
+        AlertDialog.Builder alert = new AlertDialog.Builder(
+                BricolleurActivity.this);
+        alert.setTitle("Alert!!");
+        alert.setMessage("Are you sure to Dislocate Yourself");
+        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                myaccount.set_statut(0);
+                Gson gson = new Gson();
+                String json = gson.toJson(myaccount);
+                addAccount(json);
+                dialog.dismiss();
+
+            }
+        });
+        alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
 
     }
 }
