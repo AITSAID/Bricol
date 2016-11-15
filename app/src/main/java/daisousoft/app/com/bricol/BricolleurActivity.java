@@ -12,15 +12,13 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
-import cc.cloudist.acplibrary.ACProgressFlower;
 import daisousoft.app.com.bricol.DAO.myDBHandler;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
@@ -32,15 +30,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class BricolleurActivity extends Activity {
+public class BricolleurActivity extends Activity implements View.OnClickListener {
 
-    Button j1,j2,j3,j4,j5,j6,j7,c1,c2,c3;
+    Button j1,j2,j3,j4,j5,j6,j7,c1,c2,c3,save,delete;
     EditText namebricp,phonebrico;
     private TrackMe gps;
     private double latitude,longitude;
     String IdDevice,PhoneNumber;
-    ACProgressFlower progress;
+    //ACProgressFlower progress;
     ArrayList<Jobs> myjobs;
+    private ShowcaseView showcaseView;
+    private HorizontalScrollView horizontal_scroll_view;
+    private int counter = 0;
     myDBHandler mydb ;
     Account myaccount ;
 
@@ -49,9 +50,10 @@ public class BricolleurActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_bricolleur);
-        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
-        OverScrollDecoratorHelper.setUpOverScroll(horizontalScrollView);
-
+        horizontal_scroll_view = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(horizontal_scroll_view);
+        save = (Button) findViewById(R.id.save);
+        delete = (Button) findViewById(R.id.delete);
         j1 = (Button)findViewById(R.id.job1);
         j1.setTag(111);
         j2 = (Button)findViewById(R.id.job2);
@@ -484,90 +486,7 @@ public class BricolleurActivity extends Activity {
                 });
     }
 
-    public void GetAccount(String ID){
-        OkHttpClient client = new OkHttpClient();
 
-        Request request = new Request.Builder()
-                .url("https://bricolapp-daisousoft.rhcloud.com/getbricobyid?idAccount="+ID)
-                .build();
-
-        client.newCall(request)
-                .enqueue(new Callback() {
-                    @Override
-                    public void onFailure(final Call call, IOException e) {
-                        // Error
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // For the example, you can show an error dialog or a toast
-                                // on the main UI thread
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, final Response response) throws IOException {
-                        final String res = response.body().string();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                String jsonData = res;
-                                Gson gson = new Gson();
-                                Type listType = new TypeToken<Account>(){}.getType();
-                                Account account = (Account) gson.fromJson(jsonData, listType);
-                                phonebrico.setText(account.get_phonenumber());
-                                namebricp.setText(account.get_name());
-                            }
-                        });
-
-                    }
-                });
-    }
-
-    public void GetAllJobs(String ID){
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("https://bricolapp-daisousoft.rhcloud.com/getbricojobs?idAccount="+ID)
-                .build();
-
-        client.newCall(request)
-                .enqueue(new Callback() {
-                    @Override
-                    public void onFailure(final Call call, IOException e) {
-                        // Error
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // For the example, you can show an error dialog or a toast
-                                // on the main UI thread
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, final Response response) throws IOException {
-                        final String res = response.body().string();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                String jsonData = res;
-                                Gson gson = new Gson();
-                                Type listType = new TypeToken<List<Jobs>>(){}.getType();
-                                List<Jobs> listaccounts = (List<Jobs>) gson.fromJson(jsonData, listType);
-                                for(Jobs jb :listaccounts) {
-                                    EnableJobs(jb.getIdjob());
-                                }
-                            }
-                        });
-                        //progress.dismiss();
-
-                    }
-                });
-
-    }
 
     public void UnSaveAccount(View view){
         AlertDialog.Builder alert = new AlertDialog.Builder(
@@ -598,4 +517,40 @@ public class BricolleurActivity extends Activity {
         alert.show();
 
     }
+
+    public void ShowhowCase(View view){
+        counter=0;
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(new ViewTarget(findViewById(R.id.namebrico)))
+                .setOnClickListener(this)
+                .build();
+        showcaseView.setButtonText("Next");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setShowcase(new ViewTarget(phonebrico), true);
+                break;
+            case 1:
+                showcaseView.setShowcase(new ViewTarget(c1), true);
+                break;
+            case 2:
+                showcaseView.setShowcase(new ViewTarget(save), true);
+                break;
+            case 3:
+                showcaseView.setShowcase(new ViewTarget(delete), true);
+                showcaseView.setButtonText("Close");
+                break;
+            case 4:
+                showcaseView.hide();
+                break;
+
+
+        }
+        counter++;
+    }
+
+
 }

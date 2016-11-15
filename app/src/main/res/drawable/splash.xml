@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@color/cast_expanded_controller_ad_container_white_stripe_color"/>
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/splashimg"/>
+    </item>
+
+</layer-list>

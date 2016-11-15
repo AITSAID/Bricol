@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="daisousoft.app.com.bricol.BricolleurActivity"
-    android:background="#d5d1d1">
+    tools:context="daisousoft.app.com.bricol.BricolleurActivity">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
 
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:hint="Your Name"
@@ -26,27 +25,34 @@
         android:textCursorDrawable="@color/cast_expanded_controller_ad_container_white_stripe_color"
         android:drawableLeft="@android:drawable/ic_menu_myplaces"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toEndOf="@+id/imageview" />
+
+
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
         android:id="@+id/save"
         android:onClick="SaveAccount"
-        android:text="Locate/Update"
+        android:text="Locate"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:background="@drawable/rounded_button"
+        android:layout_below="@+id/horizontal_scroll_view"
+        android:layout_alignEnd="@+id/phonebrico"
         android:layout_above="@+id/textView3"
-        android:layout_alignParentEnd="true"
-        android:background="@color/material_deep_teal_500" />
+        android:layout_marginRight="10dp" />
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/delete"
         android:onClick="UnSaveAccount"
         android:text="Dislocate"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentEnd="true"
-        android:background="@android:color/holo_red_light" />
+        android:drawableLeft="@android:drawable/btn_star_big_off"
+        android:background="@drawable/rounded_button"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_alignStart="@+id/save"
+        android:layout_marginRight="10dp" />
 
     <ImageView
         android:layout_width="100dp"
@@ -85,10 +91,10 @@
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="0672145149"
+        android:hint="Phone Number"
         android:gravity="center_vertical"
         android:drawableLeft="@android:drawable/ic_menu_call"
         android:id="@+id/phonebrico"
@@ -96,47 +102,56 @@
         android:layout_alignStart="@+id/namebrico" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Please pick your Jobs - 3 MAX"
+        android:text="Please pick your Activities"
         android:gravity="center"
         android:id="@+id/textView"
         android:layout_above="@+id/horizontal_scroll_view"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_button"
+        android:layout_margin="5dp"
+        android:textColor="#ffffff" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Job1"
+        android:text="Main Job"
         android:gravity="center"
         android:id="@+id/textView2"
         android:layout_toEndOf="@+id/choice1"
         android:layout_alignTop="@+id/choice1"
-        android:layout_above="@+id/choice2" />
+        android:layout_above="@+id/choice2"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Job 2"
+        android:text="Second Job"
         android:gravity="center"
         android:id="@+id/textView3"
         android:layout_toEndOf="@+id/choice2"
         android:layout_alignTop="@+id/choice2"
-        android:layout_above="@+id/textView4" />
+        android:layout_above="@+id/textView4"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Job 3"
+        android:text="Third Job"
         android:id="@+id/textView4"
         android:gravity="center"
         android:layout_toEndOf="@+id/choice2"
         android:layout_alignBottom="@+id/choice3"
-        android:layout_below="@+id/choice2" />
+        android:layout_below="@+id/choice2"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -210,7 +225,7 @@
         android:layout_width="50dp"
         android:layout_height="80dp"
         android:id="@+id/explain"
-        android:onClick="Showhow"
+        android:onClick="ShowhowCase"
         android:background="@drawable/explainapp"
         android:layout_alignBottom="@+id/imageView"
         android:layout_alignParentStart="true" />

@@ -32,11 +32,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.maps.android.clustering.ClusterManager;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnCancelListener;
@@ -54,7 +54,6 @@ import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.Models.JobsObject;
-import daisousoft.app.com.bricol.Models.MyItem;
 import daisousoft.app.com.bricol.Support.CustomAdapter;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
@@ -76,7 +75,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     PlayGifView pGif;
     ImageView selectedjob;
     myDBHandler mydb ;
-    ArrayList<Account> bricoList;
     Bundle bundle = new Bundle();
     DialogPlus dialogPlus,dialogLangue;
     Integer[] listJobs = {111,222,333,444,555,666,777};
@@ -84,7 +82,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     TextView lookingFor;
     String langueSelected;
     Locale myLocale;
-    private ClusterManager<MyItem> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +126,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                bricoList = mydb.getAllAccounts();
+                MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.style_json);
+                mMap.setMapStyle(style);
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
@@ -144,8 +142,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 /*CameraUpdate mylocation = CameraUpdateFactory.newLatLngZoom(
                         new LatLng(latitude,longitude), 13);
                 mMap.animateCamera(mylocation);*/
-                mClusterManager = new ClusterManager<MyItem>(getApplicationContext(), mMap);
-
                 getAllAccounts();
                 getAllJobs();
 
@@ -285,7 +281,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                     //Bitmap iconBitMap = mIcon.makeIcon(ac.get_name());
                                     if(ac!=null  &&  ac.get_statut()==1) {
                                         mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                                        mClusterManager.addItem(new MyItem(ac.get_lat(),ac.get_long()));
                                     }
                                 }
                             }
@@ -320,10 +315,10 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                     @Override
                     public void onResponse(Call call, final Response response) throws IOException {
                         final String res = response.body().string();
-                        mydb.deleteAllJobs();
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                mydb.deleteAllJobs();
                                 String jsonData = res;
                                 Gson gson = new Gson();
                                 Type listType = new TypeToken<List<JobsObject>>(){}.getType();
@@ -479,6 +474,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         editor.putString(langPref, lang);
         editor.commit();
         Intent refresh = new Intent(this, MapsActivity.class);
+        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(refresh);
 
     }
@@ -528,13 +524,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         dialogPlus.show();
 
 
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        getAllAccounts();
-        getAllJobs();
     }
 
     @Override
