@@ -55,6 +55,7 @@ import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.Models.JobsObject;
 import daisousoft.app.com.bricol.Models.MyItem;
 import daisousoft.app.com.bricol.Support.CustomAdapter;
+import daisousoft.app.com.bricol.Support.OwnIconRender;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
 import okhttp3.Call;
@@ -133,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 mClusterManager = new ClusterManager<MyItem>(getApplicationContext(), mMap);
-
+                mClusterManager.setRenderer(new OwnIconRender(getApplicationContext(), mMap, mClusterManager));
                 mMap.setOnCameraChangeListener(mClusterManager);
 
                 MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.style_json);
