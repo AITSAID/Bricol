@@ -26,8 +26,6 @@ import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -37,6 +35,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.clustering.ClusterManager;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnCancelListener;
@@ -54,6 +53,7 @@ import daisousoft.app.com.bricol.Fragments.BricoleurFragment;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.Models.JobsObject;
+import daisousoft.app.com.bricol.Models.MyItem;
 import daisousoft.app.com.bricol.Support.CustomAdapter;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
@@ -76,12 +76,16 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     ImageView selectedjob;
     myDBHandler mydb ;
     Bundle bundle = new Bundle();
-    DialogPlus dialogPlus,dialogLangue;
+    DialogPlus dialogPlus;
     Integer[] listJobs = {111,222,333,444,555,666,777};
     int itemSelected;
     TextView lookingFor;
     String langueSelected;
     Locale myLocale;
+    ClusterManager<MyItem> mClusterManager;
+    List<MyItem> MyItemsList = new ArrayList<MyItem>();
+    private MyItem clickedClusterItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +126,16 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         final InfoWindowManager infoWindowManager = mapInfoWindowFragment.infoWindowManager();
         infoWindowManager.setHideOnFling(true);
 
+
+
         mapInfoWindowFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                mClusterManager = new ClusterManager<MyItem>(getApplicationContext(), mMap);
+
+                mMap.setOnCameraChangeListener(mClusterManager);
+
                 MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.style_json);
                 mMap.setMapStyle(style);
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -144,7 +154,30 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 mMap.animateCamera(mylocation);*/
                 getAllAccounts();
                 getAllJobs();
+                //MarkerManager mMarkerManager =null;
+                //mMap.setOnMarkerClickListener(mMarkerManager);
+                /*mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
+                    @Override
+                    public boolean onClusterItemClick(MyItem item) {
+                        clickedClusterItem = item;
+                        final InfoWindow.MarkerSpecification markerSpec =
+                                new InfoWindow.MarkerSpecification(20, 90);
 
+                        Marker marker = null;
+                        marker.setPosition(item.getPosition());
+                        marker.setSnippet(item.getSnippet());
+                        Fragment fragment = null;
+                        fragment = new BricoleurFragment();
+                        bundle.putString("ID",marker.getSnippet());
+                        fragment.setArguments(bundle);
+
+                        if (fragment != null) {
+                            final InfoWindow infoWindow = new InfoWindow(marker, markerSpec, fragment);
+                            infoWindowManager.toggle(infoWindow, true);
+                        }
+                        return false;
+                    }
+                });*/
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
@@ -152,9 +185,10 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                         final InfoWindow.MarkerSpecification markerSpec =
                                 new InfoWindow.MarkerSpecification(20, 90);
 
+
                         Fragment fragment = null;
                         fragment = new BricoleurFragment();
-                        bundle.putString("ID",marker.getSnippet());
+                        bundle.putString("ID",getRightMarker(marker.getPosition().latitude,marker.getPosition().longitude));
                         fragment.setArguments(bundle);
 
                         if (fragment != null) {
@@ -217,7 +251,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         startActivity(i);
     }
 
-    public void goToMyLocation(View view){
+    /*public void goToMyLocation(View view){
         getAllAccounts();
         getAllJobs();
 
@@ -234,6 +268,16 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 new LatLng(latitude,longitude), 13);
         mMap.animateCamera(mylocation);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
+    }*/
+    public String getRightMarker(double lat , double lang){
+
+        for(MyItem i : MyItemsList)
+        {
+            if(i.getPosition().latitude == lat && i.getPosition().longitude==lang){
+                return i.getSnippet();
+            }
+        }
+        return"";
     }
 
 
@@ -243,7 +287,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     public void getAllAccounts(){
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url("https://bricolapp-daisousoft.rhcloud.com/getallbrico")
                 .build();
@@ -271,18 +314,25 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                             public void run() {
                                 mMap.clear();
                                 mydb.deleteAllAccounts();
+                                mClusterManager.clearItems();
                                 String jsonData = res;
                                 Gson gson = new Gson();
                                 Type listType = new TypeToken<List<Account>>(){}.getType();
                                 List<Account> listaccounts = (List<Account>) gson.fromJson(jsonData, listType);
                                 //IconGenerator  mIcon = new IconGenerator(getApplicationContext());
+                                //MyItemsList.clear();
                                 for(Account ac :listaccounts) {
                                     mydb.addAccount(ac);
                                     //Bitmap iconBitMap = mIcon.makeIcon(ac.get_name());
                                     if(ac!=null  &&  ac.get_statut()==1) {
-                                        mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                        //mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                        //mClusterManager.getMarkerCollection().addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                        MyItem offsetItem = new MyItem(ac.get_lat(), ac.get_long(),ac.get_id());
+                                        MyItemsList.add(offsetItem);
+                                        mClusterManager.addItem(offsetItem);
                                     }
                                 }
+                                mClusterManager.cluster();
                             }
                         });
 
@@ -532,4 +582,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         getAllAccounts();
         getAllJobs();
     }
+
+
 }
