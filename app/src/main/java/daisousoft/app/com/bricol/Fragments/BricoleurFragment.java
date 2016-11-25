@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import daisousoft.app.com.bricol.DAO.myDBHandler;
+import daisousoft.app.com.bricol.JobsActivity;
 import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.R;
@@ -48,8 +49,9 @@ public class BricoleurFragment extends Fragment {
         final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Working on it",Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(getContext(),"Working on it",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getContext() , JobsActivity.class);
+                startActivity(i);
             }
         };
 
@@ -62,7 +64,7 @@ public class BricoleurFragment extends Fragment {
                 }
 
                 catch (android.content.ActivityNotFoundException ex){
-                    Toast.makeText(getContext(),"You can Call Mr :" +bricoAccount.get_name(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"You can't Call Mr :" +bricoAccount.get_name(),Toast.LENGTH_SHORT).show();
                 }
             }
         };

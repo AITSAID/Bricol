@@ -38,11 +38,10 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BricolleurActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -61,6 +60,9 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".JobsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
