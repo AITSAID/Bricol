@@ -75,6 +75,7 @@ public class PlayGifView extends View {
 
     private void drawGif(Canvas canvas) {
         mMovie.setTime(mCurrentAnimationTime);
+        canvas.scale(1f, 1f);
         mMovie.draw(canvas, 0, 0);
         canvas.restore();
     }

@@ -28,11 +28,8 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.maps.android.clustering.ClusterManager;
@@ -54,7 +51,9 @@ import daisousoft.app.com.bricol.Models.Account;
 import daisousoft.app.com.bricol.Models.Jobs;
 import daisousoft.app.com.bricol.Models.JobsObject;
 import daisousoft.app.com.bricol.Models.MyItem;
+import daisousoft.app.com.bricol.Support.ConnectivityReceiver;
 import daisousoft.app.com.bricol.Support.CustomAdapter;
+import daisousoft.app.com.bricol.Support.MyApplication;
 import daisousoft.app.com.bricol.Support.OwnIconRender;
 import daisousoft.app.com.bricol.Support.PlayGifView;
 import daisousoft.app.com.bricol.Support.TrackMe;
@@ -64,7 +63,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener ,View.OnClickListener {
+public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener ,View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener {
 
     private ShowcaseView showcaseView;
     private int counter = 0;
@@ -316,6 +315,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                 mMap.clear();
                                 mydb.deleteAllAccounts();
                                 mClusterManager.clearItems();
+                                MyItemsList.clear();
                                 String jsonData = res;
                                 Gson gson = new Gson();
                                 Type listType = new TypeToken<List<Account>>(){}.getType();
@@ -398,10 +398,18 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                         //lookingFor.setText(itemSelected+"");
                         ArrayList<String> listAccouts = mydb.getAccountbyJob(itemSelected);
                         mMap.clear();
+                        MyItemsList.clear();
+                        mClusterManager.clearItems();
                         for (String act : listAccouts){
                             Account cc = mydb.getAccountByID(act);
-                            mMap.addMarker(new MarkerOptions().position(new LatLng(cc.get_lat(), cc.get_long())).snippet(cc.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                            if(cc.get_statut()==1){
+                                MyItem offsetItem = new MyItem(cc.get_lat(), cc.get_long(),cc.get_id());
+                                MyItemsList.add(offsetItem);
+                                mClusterManager.addItem(offsetItem);
+                            }
+                            //mMap.addMarker(new MarkerOptions().position(new LatLng(cc.get_lat(), cc.get_long())).snippet(cc.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                         }
+                        mClusterManager.cluster();
                         dialogPlus.dismiss();
                     }
                 })
@@ -582,7 +590,24 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         super.onResume();
         getAllAccounts();
         getAllJobs();
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(this);
     }
 
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+    }
+    // Showing the status in Snackbar
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (isConnected) {
+            message = "Good! Connected to Internet";
+        } else {
+            message = "Sorry! Not connected to internet";
+        }
+        Toast.makeText(MapsActivity.this, message, Toast.LENGTH_LONG).show();
+    }
 }

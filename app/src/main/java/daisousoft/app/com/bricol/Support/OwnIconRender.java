@@ -3,6 +3,8 @@ package daisousoft.app.com.bricol.Support;
 import android.content.Context;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
@@ -17,6 +19,11 @@ public class OwnIconRender extends DefaultClusterRenderer<MyItem> {
         super(context, map, clusterManager);
     }
 
+    @Override
+    protected void onBeforeClusterItemRendered(MyItem item, MarkerOptions markerOptions) {
+        super.onBeforeClusterItemRendered(item, markerOptions);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+    }
 
     @Override
     protected boolean shouldRenderAsCluster(Cluster<MyItem> cluster) {

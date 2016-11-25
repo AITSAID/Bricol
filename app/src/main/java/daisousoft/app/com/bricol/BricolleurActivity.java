@@ -35,7 +35,7 @@ public class BricolleurActivity extends Activity implements View.OnClickListener
     Button j1,j2,j3,j4,j5,j6,j7,c1,c2,c3,save,delete;
     EditText namebricp,phonebrico;
     private TrackMe gps;
-    private double latitude,longitude;
+    private Double latitude,longitude;
     String IdDevice,PhoneNumber;
     //ACProgressFlower progress;
     ArrayList<Jobs> myjobs;
@@ -452,8 +452,12 @@ public class BricolleurActivity extends Activity implements View.OnClickListener
     }
 
     public void addAccount(final String jsonValue){
-
-        ExecuteRequest("register?accountUpdate",jsonValue);
+        if(latitude == null || longitude == null){
+            Toast.makeText(BricolleurActivity.this, "Please retry when your GPS is activated", Toast.LENGTH_LONG).show();
+        }else {
+            ExecuteRequest("register?accountUpdate", jsonValue);
+            Toast.makeText(BricolleurActivity.this, "Operation executed Successfully", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void ExecuteRequest(String method, String value){
@@ -500,7 +504,7 @@ public class BricolleurActivity extends Activity implements View.OnClickListener
                 myaccount.set_statut(0);
                 Gson gson = new Gson();
                 String json = gson.toJson(myaccount);
-                addAccount(json);
+                ExecuteRequest("register?accountUpdate", json);
                 dialog.dismiss();
 
             }
