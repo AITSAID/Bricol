@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
     tools:context="daisousoft.app.com.bricol.JobsActivity"
     android:background="#ffffff">
 
@@ -18,16 +19,16 @@
         android:id="@+id/viewGif"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:onClick="FilterJobs"
         android:layout_below="@+id/lookingFor"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="JOB NAME"
-        android:id="@+id/textView5"
+        android:id="@+id/jobidname"
         android:layout_below="@+id/viewGif"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
@@ -37,12 +38,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text Medium Text Medium Text Medium Text Medium Text Medium Text Medium Text"
-        android:gravity="center"
-        android:id="@+id/textView6"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=""
+        android:id="@+id/jobdescription"
         android:layout_below="@+id/textView5"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -54,7 +55,8 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_button"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:onClick="closeIntent" />
 
     </LinearLayout>
 

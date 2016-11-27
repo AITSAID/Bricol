@@ -2,6 +2,4 @@
 <resources>
     <string name="app_name">BricolApp</string>
     <string name="title_activity_maps">BricolApp</string>
-    <string name="job1">Job 1</string>
-    <string name="job2">Job 2</string>
 </resources>

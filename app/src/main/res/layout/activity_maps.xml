@@ -3,7 +3,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="daisousoft.app.com.bricol.MapsActivity">
+tools:context="daisousoft.app.com.bricol.MapsActivity"
+    android:background="#ffffff">
 
 ...
 
@@ -12,15 +13,6 @@ tools:context="daisousoft.app.com.bricol.MapsActivity">
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment" />
-
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/profil"
-        android:background="@drawable/addbrico"
-        android:onClick="goProfil"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_centerHorizontal="true" />
 
 
     <daisousoft.app.com.bricol.Support.PlayGifView
@@ -66,8 +58,8 @@ tools:context="daisousoft.app.com.bricol.MapsActivity">
     android:layout_height="50dp"
     android:src="@drawable/job1"
     android:id="@+id/selectedjob"
-        android:layout_below="@+id/viewGif"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/lookingFor"
+        android:layout_alignStart="@+id/lookingFor" />
 
     <Button
         android:layout_width="50dp"
@@ -77,6 +69,27 @@ tools:context="daisousoft.app.com.bricol.MapsActivity">
         android:id="@+id/languagebutton"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/profil"
+        android:onClick="goProfil"
+        android:allowUndo="false"
+        android:background="@drawable/bricolapp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/btnalljobs"
+        android:onClick="displayAllJobs"
+        android:background="@drawable/alljobs"
+        android:layout_below="@+id/lookingFor"
+        android:layout_alignEnd="@+id/lookingFor" />
 
 
 </RelativeLayout>

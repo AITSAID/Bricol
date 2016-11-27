@@ -51,6 +51,7 @@ public class BricoleurFragment extends Fragment {
             public void onClick(View v) {
                 //Toast.makeText(getContext(),"Working on it",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext() , JobsActivity.class);
+                i.putExtra("jobid",(String)v.getTag());
                 startActivity(i);
             }
         };
@@ -78,6 +79,7 @@ public class BricoleurFragment extends Fragment {
         c3.setTag(c3.getId());
         view.findViewById(R.id.display1).setOnClickListener(onClickListener);
         view.findViewById(R.id.display2).setOnClickListener(onClickListener);
+        view.findViewById(R.id.display3).setOnClickListener(onClickListener);
         view.findViewById(R.id.callbrico).setOnClickListener(onCallListener);
 
         for(Jobs jb :listjobs) {
@@ -96,17 +98,17 @@ public class BricoleurFragment extends Fragment {
         if(111==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job1));
-                c1.setTag("full");
+                c1.setTag("111");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job1));
-                    c2.setTag("full");
+                    c2.setTag("111");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job1));
-                        c3.setTag("full");
+                        c3.setTag("111");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -115,17 +117,17 @@ public class BricoleurFragment extends Fragment {
         if(222==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job2));
-                c1.setTag("full");
+                c1.setTag("222");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job2));
-                    c2.setTag("full");
+                    c2.setTag("222");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job2));
-                        c3.setTag("full");
+                        c3.setTag("222");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -134,17 +136,17 @@ public class BricoleurFragment extends Fragment {
         if(333==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job3));
-                c1.setTag("full");
+                c1.setTag("333");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job3));
-                    c2.setTag("full");
+                    c2.setTag("333");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job3));
-                        c3.setTag("full");
+                        c3.setTag("333");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -153,17 +155,17 @@ public class BricoleurFragment extends Fragment {
         if(444==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job4));
-                c1.setTag("full");
+                c1.setTag("444");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job4));
-                    c2.setTag("full");
+                    c2.setTag("444");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job4));
-                        c3.setTag("full");
+                        c3.setTag("444");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -173,17 +175,17 @@ public class BricoleurFragment extends Fragment {
         if(555==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job5));
-                c1.setTag("full");
+                c1.setTag("555");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job5));
-                    c2.setTag("full");
+                    c2.setTag("555");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job5));
-                        c3.setTag("full");
+                        c3.setTag("555");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -193,17 +195,17 @@ public class BricoleurFragment extends Fragment {
         if(666==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job6));
-                c1.setTag("full");
+                c1.setTag("666");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job6));
-                    c2.setTag("full");
+                    c2.setTag("666");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job6));
-                        c3.setTag("full");
+                        c3.setTag("666");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -212,17 +214,17 @@ public class BricoleurFragment extends Fragment {
         if(777==idjob){
             if(choose == 1 ){
                 c1.setBackground(getResources().getDrawable(R.drawable.job7));
-                c1.setTag("full");
+                c1.setTag("777");
                 c1.setVisibility(View.VISIBLE);
             }else{
                 if(choose == 2){
                     c2.setBackground(getResources().getDrawable(R.drawable.job7));
-                    c2.setTag("full");
+                    c2.setTag("777");
                     c2.setVisibility(View.VISIBLE);
                 }else{
                     if(choose == 3){
                         c3.setBackground(getResources().getDrawable(R.drawable.job7));
-                        c3.setTag("full");
+                        c3.setTag("777");
                         c3.setVisibility(View.VISIBLE);
                     }
                 }
@@ -233,13 +235,13 @@ public class BricoleurFragment extends Fragment {
     }
 
     public int checkEmptyChoice() {
-        if (!c1.getTag().equals("full")) {
+        if (c1.getTag().equals(c1.getId())) {
             return 1;
         } else {
-            if (!c2.getTag().equals("full")) {
+            if (c2.getTag().equals(c2.getId())) {
                 return 2;
             } else {
-                if (!c3.getTag().equals("full")) {
+                if (c3.getTag().equals(c3.getId())) {
                     return 3;
                 }
             }

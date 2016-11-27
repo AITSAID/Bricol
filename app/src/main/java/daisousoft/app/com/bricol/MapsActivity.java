@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -71,7 +70,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     private TrackMe gps;
     double latitude;
     double longitude;
-    Button myProfil,languagebutton,explain;
+    Button myProfil,languagebutton,explain,btnalljobs;
     PlayGifView pGif;
     ImageView selectedjob;
     myDBHandler mydb ;
@@ -104,6 +103,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         myProfil = (Button) findViewById(R.id.profil);
         explain = (Button) findViewById(R.id.explain);
         languagebutton = (Button) findViewById(R.id.languagebutton);
+        btnalljobs=(Button) findViewById(R.id.btnalljobs);
+        btnalljobs.setVisibility(View.INVISIBLE);
         selectedjob = (ImageView) findViewById(R.id.selectedjob);
         selectedjob.setVisibility(View.GONE);
         lookingFor = (TextView) findViewById(R.id.lookingFor);
@@ -439,50 +440,50 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     public void LookingForJobs(int singleJob){
         if(111==singleJob){
-            lookingFor.setText(getResources().getString(R.string.job1));
+            lookingFor.setText("Electrician");
             selectedjob.setImageResource(R.drawable.job1);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
         }
         if(222==singleJob){
-            lookingFor.setText(getResources().getString(R.string.job2));
+            lookingFor.setText("Plumber");
             selectedjob.setImageResource(R.drawable.job2);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
+
         }
         if(333==singleJob){
-            lookingFor.setText("job3");
+            lookingFor.setText("Painter");
             selectedjob.setImageResource(R.drawable.job3);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
         }
         if(444==singleJob){
-            lookingFor.setText("job4");
+            lookingFor.setText("Mechanic");
             selectedjob.setImageResource(R.drawable.job4);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
         }
         if(555==singleJob){
-            lookingFor.setText("job5");
+            lookingFor.setText("Carpenter");
             selectedjob.setImageResource(R.drawable.job5);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
         }
         if(666==singleJob){
-            lookingFor.setText("job6");
+            lookingFor.setText("Maid");
             selectedjob.setImageResource(R.drawable.job6);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
         }
         if(777==singleJob){
-            lookingFor.setText("job7");
+            lookingFor.setText("Teacher");
             selectedjob.setImageResource(R.drawable.job7);
             selectedjob.setVisibility(View.VISIBLE);
+            btnalljobs.setVisibility(View.VISIBLE);
         }
     }
 
-
-    private void setAlpha(float alpha, View... views) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            for (View view : views) {
-                view.setAlpha(alpha);
-            }
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -585,11 +586,24 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     }
 
+    public void displayAllJobs(View view){
+        lookingFor.setText("All Jobs");
+        getAllAccounts();
+        getAllJobs();
+        selectedjob.setVisibility(View.INVISIBLE);
+        btnalljobs.setVisibility(View.INVISIBLE);
+
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        getAllAccounts();
+        /*getAllAccounts();
         getAllJobs();
+        lookingFor.setText("All Jobs");
+        selectedjob.setVisibility(View.INVISIBLE);
+        btnalljobs.setVisibility(View.INVISIBLE);*/
         // register connection status listener
         MyApplication.getInstance().setConnectivityListener(this);
     }
