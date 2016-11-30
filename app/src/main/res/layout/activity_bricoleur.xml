@@ -7,12 +7,17 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text=" Mr Marouane"
-        android:background="@drawable/rounded_button" />
+        android:background="@drawable/rounded_button"
+        android:drawableLeft="@android:drawable/radiobutton_on_background"
+        android:drawableRight="@android:drawable/radiobutton_on_background"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,10 +56,8 @@
         android:layout_height="50dp"
         android:background="@drawable/callbrico"
         android:id="@+id/callbrico"
-        android:layout_below="@+id/name"
-        android:layout_alignEnd="@+id/name"
-        android:layout_marginTop="20dp"
-        android:layout_alignBottom="@+id/linearLayout" />
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

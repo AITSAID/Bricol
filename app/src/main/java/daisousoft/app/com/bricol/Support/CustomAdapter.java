@@ -28,31 +28,31 @@ public class CustomAdapter extends ArrayAdapter<Integer> {
 
 
         if(111==singleJob){
-            jobName.setText("Electrician");
+            jobName.setText(getContext().getResources().getString(R.string.Job1));
             jobImg.setImageResource(R.drawable.job1);
         }
         if(222==singleJob){
-            jobName.setText("Plumber");
+            jobName.setText(getContext().getResources().getString(R.string.Job2));
             jobImg.setImageResource(R.drawable.job2);
         }
         if(333==singleJob){
-            jobName.setText("Painter");
+            jobName.setText(getContext().getResources().getString(R.string.Job3));
             jobImg.setImageResource(R.drawable.job3);
         }
         if(444==singleJob){
-            jobName.setText("Mechanic");
+            jobName.setText(getContext().getResources().getString(R.string.Job4));
             jobImg.setImageResource(R.drawable.job4);
         }
         if(555==singleJob){
-            jobName.setText("Carpenter");
+            jobName.setText(getContext().getResources().getString(R.string.Job5));
             jobImg.setImageResource(R.drawable.job5);
         }
         if(666==singleJob){
-            jobName.setText("Maid");
+            jobName.setText(getContext().getResources().getString(R.string.Job6));
             jobImg.setImageResource(R.drawable.job6);
         }
         if(777==singleJob){
-            jobName.setText("Teacher");
+            jobName.setText(getContext().getResources().getString(R.string.Job7));
             jobImg.setImageResource(R.drawable.job7);
         }
 

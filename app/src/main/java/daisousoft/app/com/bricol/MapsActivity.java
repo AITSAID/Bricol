@@ -62,7 +62,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener ,View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener {
+public class MapsActivity extends FragmentActivity implements InfoWindowManager.WindowShowListener, View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     private ShowcaseView showcaseView;
     private int counter = 0;
@@ -70,14 +70,14 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     private TrackMe gps;
     double latitude;
     double longitude;
-    Button myProfil,languagebutton,explain,btnalljobs;
+    Button myProfil, languagebutton, explain, btnalljobs;
     PlayGifView pGif;
     ImageView selectedjob;
-    myDBHandler mydb ;
+    myDBHandler mydb;
     Bundle bundle = new Bundle();
     DialogPlus dialogPlus;
-    Integer[] listJobs = {111,222,333,444,555,666,777};
-    int itemSelected;
+    Integer[] listJobs = {111, 222, 333, 444, 555, 666, 777};
+    int itemSelected = 36;
     TextView lookingFor;
     String langueSelected;
     Locale myLocale;
@@ -92,7 +92,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-          //      .findFragmentById(R.id.infoWindowMap);
+        //      .findFragmentById(R.id.infoWindowMap);
 
         //setLocale("ar");
 
@@ -103,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         myProfil = (Button) findViewById(R.id.profil);
         explain = (Button) findViewById(R.id.explain);
         languagebutton = (Button) findViewById(R.id.languagebutton);
-        btnalljobs=(Button) findViewById(R.id.btnalljobs);
+        btnalljobs = (Button) findViewById(R.id.btnalljobs);
         btnalljobs.setVisibility(View.INVISIBLE);
         selectedjob = (ImageView) findViewById(R.id.selectedjob);
         selectedjob.setVisibility(View.GONE);
@@ -111,12 +111,10 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         pGif = (PlayGifView) findViewById(R.id.viewGif);
         pGif.setImageResource(R.drawable.radar);
         gps = new TrackMe(MapsActivity.this);
-        if(gps.canGetLocation()){
-            latitude = gps .getLatitude();
+        if (gps.canGetLocation()) {
+            latitude = gps.getLatitude();
             longitude = gps.getLongitude();
-        }
-        else
-        {
+        } else {
             gps.showSettingsAlert();
         }
 
@@ -126,7 +124,6 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
         final InfoWindowManager infoWindowManager = mapInfoWindowFragment.infoWindowManager();
         infoWindowManager.setHideOnFling(true);
-
 
 
         mapInfoWindowFragment.getMapAsync(new OnMapReadyCallback() {
@@ -141,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 mMap.setMapStyle(style);
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
-                mMap.setMyLocationEnabled(true);
+                    mMap.setMyLocationEnabled(true);
 
                 } else {
                     Toast.makeText(MapsActivity.this, "You have to accept to enjoy all app's services!", Toast.LENGTH_LONG).show();
@@ -189,7 +186,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
                         Fragment fragment = null;
                         fragment = new BricoleurFragment();
-                        bundle.putString("ID",getRightMarker(marker.getPosition().latitude,marker.getPosition().longitude));
+                        bundle.putString("ID", getRightMarker(marker.getPosition().latitude, marker.getPosition().longitude));
                         fragment.setArguments(bundle);
 
                         if (fragment != null) {
@@ -247,8 +244,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 //        Log.d("debug", "onWindowHidden: " + infoWindow);
     }
 
-    public void goProfil(View view){
-        Intent i = new Intent(this , BricolleurActivity.class);
+    public void goProfil(View view) {
+        Intent i = new Intent(this, BricolleurActivity.class);
         startActivity(i);
     }
 
@@ -270,23 +267,22 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         mMap.animateCamera(mylocation);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));
     }*/
-    public String getRightMarker(double lat , double lang){
+    public String getRightMarker(double lat, double lang) {
 
-        for(MyItem i : MyItemsList)
-        {
-            if(i.getPosition().latitude == lat && i.getPosition().longitude==lang){
+        for (MyItem i : MyItemsList) {
+            if (i.getPosition().latitude == lat && i.getPosition().longitude == lang) {
                 return i.getSnippet();
             }
         }
-        return"";
+        return "";
     }
 
 
-    public void mChooseJob(View view){
+    public void mChooseJob(View view) {
 
     }
 
-    public void getAllAccounts(){
+    public void getAllAccounts() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://bricolapp-daisousoft.rhcloud.com/getallbrico")
@@ -319,22 +315,27 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                 MyItemsList.clear();
                                 String jsonData = res;
                                 Gson gson = new Gson();
-                                Type listType = new TypeToken<List<Account>>(){}.getType();
+                                Type listType = new TypeToken<List<Account>>() {
+                                }.getType();
                                 List<Account> listaccounts = (List<Account>) gson.fromJson(jsonData, listType);
                                 //IconGenerator  mIcon = new IconGenerator(getApplicationContext());
                                 //MyItemsList.clear();
-                                for(Account ac :listaccounts) {
+                                for (Account ac : listaccounts) {
                                     mydb.addAccount(ac);
                                     //Bitmap iconBitMap = mIcon.makeIcon(ac.get_name());
-                                    if(ac!=null  &&  ac.get_statut()==1) {
+                                    if (ac != null && ac.get_statut() == 1 && itemSelected == 36) {
                                         //mMap.addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                                         //mClusterManager.getMarkerCollection().addMarker(new MarkerOptions().position(new LatLng(ac.get_lat(), ac.get_long())).snippet(ac.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                                        MyItem offsetItem = new MyItem(ac.get_lat(), ac.get_long(),ac.get_id());
+                                        MyItem offsetItem = new MyItem(ac.get_lat(), ac.get_long(), ac.get_id());
                                         MyItemsList.add(offsetItem);
                                         mClusterManager.addItem(offsetItem);
                                     }
                                 }
+                                if (itemSelected != 36) {
+                                    getFiltredJobs(itemSelected);
+                                }
                                 mClusterManager.cluster();
+
                             }
                         });
 
@@ -342,7 +343,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 });
     }
 
-    public void getAllJobs(){
+    public void getAllJobs() {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -373,10 +374,11 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                                 mydb.deleteAllJobs();
                                 String jsonData = res;
                                 Gson gson = new Gson();
-                                Type listType = new TypeToken<List<JobsObject>>(){}.getType();
+                                Type listType = new TypeToken<List<JobsObject>>() {
+                                }.getType();
                                 List<JobsObject> listjobs = (List<JobsObject>) gson.fromJson(jsonData, listType);
-                                for(JobsObject jb :listjobs) {
-                                    mydb.addJob(new Jobs(jb.get_idAccount(),jb.getIdjob()));
+                                for (JobsObject jb : listjobs) {
+                                    mydb.addJob(new Jobs(jb.get_idAccount(), jb.getIdjob()));
                                 }
                             }
                         });
@@ -385,7 +387,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 });
 
     }
-    public void FilterJobs(View view){
+
+    public void FilterJobs(View view) {
         dialogPlus = DialogPlus.newDialog(this)
                 .setAdapter(new CustomAdapter(this, listJobs))
                 .setCancelable(true)
@@ -394,23 +397,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
-                        itemSelected =(Integer)item;
-                        LookingForJobs(itemSelected);
-                        //lookingFor.setText(itemSelected+"");
-                        ArrayList<String> listAccouts = mydb.getAccountbyJob(itemSelected);
-                        mMap.clear();
-                        MyItemsList.clear();
-                        mClusterManager.clearItems();
-                        for (String act : listAccouts){
-                            Account cc = mydb.getAccountByID(act);
-                            if(cc.get_statut()==1){
-                                MyItem offsetItem = new MyItem(cc.get_lat(), cc.get_long(),cc.get_id());
-                                MyItemsList.add(offsetItem);
-                                mClusterManager.addItem(offsetItem);
-                            }
-                            //mMap.addMarker(new MarkerOptions().position(new LatLng(cc.get_lat(), cc.get_long())).snippet(cc.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                        }
-                        mClusterManager.cluster();
+                        itemSelected = (Integer) item;
+                        getFiltredJobs(itemSelected);
                         dialogPlus.dismiss();
                     }
                 })
@@ -438,46 +426,67 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         dialogPlus.show();
     }
 
-    public void LookingForJobs(int singleJob){
-        if(111==singleJob){
-            lookingFor.setText("Electrician");
+
+    public void getFiltredJobs(int itemid) {
+        LookingForJobs(itemid);
+        //lookingFor.setText(itemSelected+"");
+        ArrayList<String> listAccouts = mydb.getAccountbyJob(itemid);
+        mMap.clear();
+        MyItemsList.clear();
+        mClusterManager.clearItems();
+        for (String act : listAccouts) {
+            Account cc = mydb.getAccountByID(act);
+            if (cc.get_statut() == 1) {
+                MyItem offsetItem = new MyItem(cc.get_lat(), cc.get_long(), cc.get_id());
+                MyItemsList.add(offsetItem);
+                mClusterManager.addItem(offsetItem);
+            }
+            //mMap.addMarker(new MarkerOptions().position(new LatLng(cc.get_lat(), cc.get_long())).snippet(cc.get_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        }
+        mClusterManager.cluster();
+    }
+
+
+    public void LookingForJobs(int singleJob) {
+        if (111 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job1));
             selectedjob.setImageResource(R.drawable.job1);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
         }
-        if(222==singleJob){
-            lookingFor.setText("Plumber");
+        if (222 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job2));
             selectedjob.setImageResource(R.drawable.job2);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
 
         }
-        if(333==singleJob){
-            lookingFor.setText("Painter");
+        if (333 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job3));
             selectedjob.setImageResource(R.drawable.job3);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
         }
-        if(444==singleJob){
-            lookingFor.setText("Mechanic");
+        if (444 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job4));
             selectedjob.setImageResource(R.drawable.job4);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
         }
-        if(555==singleJob){
-            lookingFor.setText("Carpenter");
+        if (555 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job5));
             selectedjob.setImageResource(R.drawable.job5);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
         }
-        if(666==singleJob){
-            lookingFor.setText("Maid");
+        if (666 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job6));
             selectedjob.setImageResource(R.drawable.job6);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
         }
-        if(777==singleJob){
-            lookingFor.setText("Teacher");
+        if (777 == singleJob) {
+            lookingFor.setText(getResources().getString(R.string.Job7));
             selectedjob.setImageResource(R.drawable.job7);
             selectedjob.setVisibility(View.VISIBLE);
             btnalljobs.setVisibility(View.VISIBLE);
@@ -509,8 +518,8 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
         counter++;
     }
 
-    public void Showhow(View view){
-        counter=0;
+    public void Showhow(View view) {
+        counter = 0;
         showcaseView = new ShowcaseView.Builder(this)
                 .setTarget(new ViewTarget(findViewById(R.id.profil)))
                 .setOnClickListener(this)
@@ -539,24 +548,28 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     }
 
-    public void SelectLanguage(View view){
-        String[] languages = {"العربية","Français","English","にほん","Español","Deutsch","русский"};
+    public void SelectLanguage(View view) {
+        String[] languages = {"العربية", "Français", "English", "にほん", "Español", "Deutsch", "русский"};
         dialogPlus = DialogPlus.newDialog(this)
-                .setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_checked,languages))
+                .setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, languages))
                 .setCancelable(true)
                 .setGravity(Gravity.TOP)
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
-                        langueSelected =(String)item;
-                        if(position==0){
-                        setLocale("ar");}
-                        if(position==1){
-                            setLocale("fr");}
-                        if(position==2){
-                            setLocale("en");}
-                        if(position==3){
-                            setLocale("ja");}
+                        langueSelected = (String) item;
+                        if (position == 0) {
+                            setLocale("ar");
+                        }
+                        if (position == 1) {
+                            setLocale("fr");
+                        }
+                        if (position == 2) {
+                            setLocale("en");
+                        }
+                        if (position == 3) {
+                            setLocale("ja");
+                        }
                         dialogPlus.dismiss();
                     }
                 })
@@ -586,12 +599,13 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
 
     }
 
-    public void displayAllJobs(View view){
-        lookingFor.setText("All Jobs");
+    public void displayAllJobs(View view) {
+        lookingFor.setText(getResources().getString(R.string.All_jobs));
         getAllAccounts();
         getAllJobs();
         selectedjob.setVisibility(View.INVISIBLE);
         btnalljobs.setVisibility(View.INVISIBLE);
+        itemSelected = 36;
 
 
     }
@@ -599,9 +613,9 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     @Override
     protected void onResume() {
         super.onResume();
-        /*getAllAccounts();
+        getAllAccounts();
         getAllJobs();
-        lookingFor.setText("All Jobs");
+        /*lookingFor.setText("All Jobs");
         selectedjob.setVisibility(View.INVISIBLE);
         btnalljobs.setVisibility(View.INVISIBLE);*/
         // register connection status listener
@@ -613,6 +627,7 @@ public class MapsActivity extends FragmentActivity implements InfoWindowManager.
     public void onNetworkConnectionChanged(boolean isConnected) {
         showSnack(isConnected);
     }
+
     // Showing the status in Snackbar
     private void showSnack(boolean isConnected) {
         String message;

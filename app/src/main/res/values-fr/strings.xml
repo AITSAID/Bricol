@@ -2,4 +2,20 @@
 <resources>
     <string name="app_name">BricolApp</string>
     <string name="title_activity_maps">BricolApp</string>
+    <string name="All_jobs">Tous les emplois</string>
+    <string name="Name_brico">Votre Nom</string>
+    <string name="Phone_brico">Numéro de Télephone</string>
+    <string name="Jobs_brico">Choisissez vos activités</string>
+    <string name="mainjob_brico">Emploi principal</string>
+    <string name="secondjob_brico">Deuxième emploi</string>
+    <string name="thirdjod_brico">Troisième emploi</string>
+    <string name="locate_brico">Localiser</string>
+    <string name="cover_brico">Couvrir</string>
+    <string name="Job1">Électricien</string>
+    <string name="Job2">Plombier</string>
+    <string name="Job3">Peintre</string>
+    <string name="Job4">Mécanicien</string>
+    <string name="Job5">Charpentier</string>
+    <string name="Job6">Femme de ménage</string>
+    <string name="Job7">Maître</string>
 </resources>

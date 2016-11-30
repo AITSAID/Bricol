@@ -92,6 +92,14 @@ public class BricolleurActivity extends Activity implements View.OnClickListener
         progress.show();*/
         mydb = new myDBHandler(getApplicationContext());
         myaccount = mydb.getAccountByID(IdDevice);
+        if(myaccount.get_statut()==0){
+            save.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_off, 0, 0, 0);
+            delete.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_on, 0, 0, 0);
+        }
+        if(myaccount.get_statut()==1){
+            save.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_on, 0, 0, 0);
+            delete.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_off, 0, 0, 0);
+        }
         phonebrico.setText(myaccount.get_phonenumber());
         namebricp.setText(myaccount.get_name());
         myjobs = mydb.getAllJobs(IdDevice);
@@ -457,6 +465,8 @@ public class BricolleurActivity extends Activity implements View.OnClickListener
         }else {
             ExecuteRequest("register?accountUpdate", jsonValue);
             Toast.makeText(BricolleurActivity.this, "Operation executed Successfully", Toast.LENGTH_LONG).show();
+            save.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_on, 0, 0, 0);
+            delete.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_off, 0, 0, 0);
         }
     }
 
@@ -505,6 +515,8 @@ public class BricolleurActivity extends Activity implements View.OnClickListener
                 Gson gson = new Gson();
                 String json = gson.toJson(myaccount);
                 ExecuteRequest("register?accountUpdate", json);
+                save.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_off, 0, 0, 0);
+                delete.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.btn_star_big_on, 0, 0, 0);
                 dialog.dismiss();
 
             }

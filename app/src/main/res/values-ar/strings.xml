@@ -2,4 +2,20 @@
 <resources>
     <string name="app_name">BricolApp</string>
     <string name="title_activity_maps">BricolApp</string>
+    <string name="All_jobs">كل المهن</string>
+    <string name="Name_brico">ادخل اسمك</string>
+    <string name="Phone_brico">رقم هاتفك</string>
+    <string name="Jobs_brico">إختر الأعمال التي تجيدها</string>
+    <string name="mainjob_brico">العمل الرئيسي</string>
+    <string name="secondjob_brico">العمل الثاني</string>
+    <string name="thirdjod_brico">العمل الثالث</string>
+    <string name="locate_brico">تحديد المكان</string>
+    <string name="cover_brico">إخفاء المكان</string>
+    <string name="Job1">عامل الكهرباء</string>
+    <string name="Job2">بلومبي-سمكري- </string>
+    <string name="Job3">عامل الطلاء</string>
+    <string name="Job4">ميكانيكي</string>
+    <string name="Job5">نجّار</string>
+    <string name="Job6">عاملة نظافة</string>
+    <string name="Job7">معلم</string>
 </resources>

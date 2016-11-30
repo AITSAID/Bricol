@@ -70,7 +70,7 @@ public class BricoleurFragment extends Fragment {
             }
         };
         name = (TextView) view.findViewById(R.id.name);
-        name.setText(" Hi i'm "+bricoAccount.get_name());
+        name.setText(" "+bricoAccount.get_name()+" ");
         c1 = (Button) view.findViewById(R.id.display1);
         c1.setTag(c1.getId());
         c2 = (Button) view.findViewById(R.id.display2);

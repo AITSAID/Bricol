@@ -37,12 +37,14 @@ tools:context="daisousoft.app.com.bricol.MapsActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="  All Jobs  "
+        android:text="@string/All_jobs"
         android:gravity="center"
         android:id="@+id/lookingFor"
         android:background="@drawable/board"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
 
     <Button
         android:layout_width="50dp"
@@ -77,10 +79,9 @@ tools:context="daisousoft.app.com.bricol.MapsActivity"
         android:onClick="goProfil"
         android:allowUndo="false"
         android:background="@drawable/bricolapp"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="50dp"

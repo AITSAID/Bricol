@@ -39,7 +39,7 @@ public class JobsActivity extends Activity {
 
     void JobInformation(int idjob){
         if(111==idjob){
-            JobIdNmame.setText("Electrician");
+            JobIdNmame.setText(getResources().getString(R.string.Job1));
             pGif.setImageResource(R.drawable.job1_gif);
             JobDescription.setText("• Install and maintain wiring and lighting systems\n" +
                     "• Inspect electrical components, such as transformers and circuit breakers\n" +
@@ -49,7 +49,7 @@ public class JobsActivity extends Activity {
                     "• Direct and train workers to install, maintain, or repair electrical wiring or equipment");
         }
         if(222==idjob){
-            JobIdNmame.setText("Plumber");
+            JobIdNmame.setText(getResources().getString(R.string.Job2));
             pGif.setImageResource(R.drawable.job2_gif);
             JobDescription.setText("• Read blueprints and drawings to understand or plan the layout of plumbing, waste disposal and water supply systems\n" +
                     "• Cut, assemble and install pipes and tubes with attention to existing infrastructure (e.g. electrical wiring)\n" +
@@ -61,7 +61,7 @@ public class JobsActivity extends Activity {
                     "• Install waste disposal and sanitary systems with well-functioning DWV systems");
         }
         if(333==idjob){
-            JobIdNmame.setText("Painter");
+            JobIdNmame.setText(getResources().getString(R.string.Job3));
             pGif.setImageResource(R.drawable.job3_gif);
             JobDescription.setText("• Apply paint, vinyl and wallpaper including special papers and fabrics to walls, furniture and structures\n" +
                     "• Examine and maintain painted exterior and interior painted surfaces, trimming and fixtures\n" +
@@ -83,7 +83,7 @@ public class JobsActivity extends Activity {
                     "• Maintain a clean work environment");
         }
         if(444==idjob){
-            JobIdNmame.setText("Mechanic");
+            JobIdNmame.setText(getResources().getString(R.string.Job4));
             pGif.setImageResource(R.drawable.job4_gif);
             JobDescription.setText("• Keeps equipment available for use by inspecting and testing vehicles; completing preventive maintenance such as, engine tune-ups, oil changes, tire rotation and changes, wheel balancing, replacing filters.\n" +
                     "• Maintains vehicle functional condition by listening to operator complaints; conducting inspections; repairing engine failures; repairing mechanical and electrical systems malfunctions; replacing parts and components; repairing body damage.\n" +
@@ -99,7 +99,7 @@ public class JobsActivity extends Activity {
         }
 
         if(555==idjob){
-            JobIdNmame.setText("Carpenter");
+            JobIdNmame.setText(getResources().getString(R.string.Job5));
             pGif.setImageResource(R.drawable.job5_gif);
             JobDescription.setText("• Follow blueprints and building plans to meet the needs of clients\n" +
                     "• Install structures and fixtures, such as windows and molding\n" +
@@ -111,7 +111,7 @@ public class JobsActivity extends Activity {
         }
 
         if(666==idjob){
-            JobIdNmame.setText("Maid");
+            JobIdNmame.setText(getResources().getString(R.string.Job6));
             pGif.setImageResource(R.drawable.job6_gif);
             JobDescription.setText("• Clean and tidy all areas to the standard cleanliness within time limits\n" +
                     "• Deliver excellent customer service\n" +
@@ -123,7 +123,7 @@ public class JobsActivity extends Activity {
                     "• Comply with health and safety regulation and act in line with company policies and licensing laws");
         }
         if(777==idjob){
-            JobIdNmame.setText("Teacher");
+            JobIdNmame.setText(getResources().getString(R.string.Job7));
             pGif.setImageResource(R.drawable.job7_gif);
             JobDescription.setText("• Present lessons in a comprehensive manner and use visual/audio means to facilitate learning\n" +
                     "• Provide individualized instruction to each student by promoting interactive learning\n" +
